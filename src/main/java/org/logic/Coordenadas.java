@@ -10,40 +10,40 @@ public class Coordenadas {
     private int y;
 
     public Coordenadas(int x, int y) {
-        this.setX(x);
-        this.setY(y);
+        this.x = x;
+        this.y = y;
     }
 
-    public Coordenadas compararCoords(Coordenadas otrasCoords){
+    public Coordenadas calcularDesplazamiento(Coordenadas coordenadas) {
         Coordenadas resultado = new Coordenadas(0,0);
-        if (this.getX() - otrasCoords.getX() > 0){
+        if (x - coordenadas.getX() > 0)
             resultado.setX(IZQUIERDA);
-        }
-        if (this.getX() - otrasCoords.getX() < 0){
-            resultado.setX(DERECHA);
-        }
-        if (this.getY() - otrasCoords.getY() > 0){
-            resultado.setY(ARRIBA);
-        }
-        if (this.getY() - otrasCoords.getY() < 0){
-            resultado.setY(ABAJO);
-        }
-        return resultado;
-    }
 
-    public int getX() {
-        return x;
+        if (x - coordenadas.getX() < 0)
+            resultado.setX(DERECHA);
+
+        if (y - coordenadas.getY() > 0)
+            resultado.setY(ARRIBA);
+
+        if (y - coordenadas.getY() < 0)
+            resultado.setY(ABAJO);
+
+        return resultado;
     }
 
     public void setX(int x) {
         this.x = x;
     }
 
-    public int getY() {
-        return y;
-    }
-
     public void setY(int y) {
         this.y = y;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 }
