@@ -2,30 +2,17 @@ package org.logic;
 
 public class Main {
     public static void main(String[] args) {
-        // Supongo Matriz de 10x10
-        Juego juego = new Juego(new Coordenadas(10,10), 0);
-
+        Juego juego = new Juego(new Coordenadas(20, 20));
         juego.agregarRobots();
-        System.out.println("--------------------");
-        juego.moverRobots();
-        juego.mostrarPosiciones();
-        juego.eliminarRobots();
-        System.out.println("--------------------");
+        juego.borrar();
+        System.out.println("--------------");
 
-        juego.moverRobots();
-        juego.mostrarPosiciones();
-        juego.eliminarRobots();
-        System.out.println("--------------------");
+        while(!juego.juegoFinalizado()) {
+            juego.moverJugador(new Coordenadas(10,10));
+            juego.borrar();
+            System.out.println("--------------");
+        }
 
-        juego.moverRobots();
-        juego.mostrarPosiciones();
-        juego.eliminarRobots();
-        System.out.println("--------------------");
-
-        juego.moverRobots();
-        juego.mostrarPosiciones();
-        juego.eliminarRobots();
-        System.out.println("--------------------");
 
     }
 }

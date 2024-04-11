@@ -5,7 +5,6 @@ public class RobotX1 extends Enemigo {
         super(coordenadasInicial);
     }
 
-    // El Robot se mueve segun como se movio el Jugador
     @Override
     public void moverEnemigo(Coordenadas coordenadasJugador) {
         Coordenadas distanciaMover = getCoordenadas().calcularDesplazamiento(coordenadasJugador);
