@@ -72,9 +72,9 @@ public class Juego {
     private int teleportSegurosDisponibles;
     private final Mapa mapa;
 
-    private Jugador jugador;
-    private final List<Enemigo> robots;
-    private final List<Obstaculo> obstaculos;
+    public Jugador jugador;
+    public final List<Enemigo> robots;
+    public final List<Obstaculo> obstaculos;
 
     public Juego (Coordenadas dimensionDelMapa) {
         nivelActual = 1;
