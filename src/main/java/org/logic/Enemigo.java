@@ -1,19 +1,42 @@
 package org.logic;
 
-public abstract class Enemigo {
-    private Coordenadas posicionEnMapa;
+import java.util.ArrayList;
 
-    public Enemigo(Coordenadas posicionInicial) {
-        posicionEnMapa = posicionInicial;
+public abstract class Enemigo {
+    void isEliminado(ArrayList<Enemigo> enemigos) {
+        for (Enemigo enemigo : enemigos) {
+            if (!this.equals(enemigo) && !this.getEliminado()) {
+                if (this.getCoordenadas().esIgual(enemigo.getCoordenadas())) {
+                    this.setEliminado(true);
+                    enemigo.setEliminado(true);
+                }
+            }
+        }
     }
 
-    public abstract void moverEnemigo(Coordenadas coordenadasJugador);
+    private boolean eliminado;
+    private Coordenadas coordenadas;
 
-    public void setCoordenadas(Coordenadas posicionEnMapa) {
-        this.posicionEnMapa = posicionEnMapa;
+    public Enemigo(Coordenadas coordenadas) {
+        eliminado = false;
+        this.coordenadas = coordenadas;
+    }
+
+    public abstract void mover(Coordenadas coordenadasJugador, ArrayList<Enemigo> enemigos);
+
+    public void setEliminado(boolean eliminado) {
+        this.eliminado = eliminado;
+    }
+
+    public void setCoordenadas(Coordenadas coordenadas) {
+        this.coordenadas = coordenadas;
+    }
+
+    public boolean getEliminado() {
+        return eliminado;
     }
 
     public Coordenadas getCoordenadas() {
-        return posicionEnMapa;
+        return coordenadas;
     }
 }
