@@ -9,6 +9,7 @@ public class Main {
             juego.borrar();
             System.out.println("-----------------");
             juego.teleportJugador(null);
+            juego.borrar();
         } while(!juego.finalizado());
     }
 }

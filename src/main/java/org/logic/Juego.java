@@ -111,6 +111,7 @@ public class Juego {
         enemigos.addAll(obstaculos);
 
         for (Enemigo enemigo : enemigos)
-            System.out.println("(%d, %d)" .formatted(enemigo.getCoordenadas().getX(), enemigo.getCoordenadas().getY()));
+            System.out.println("Enemigo: (%d, %d)" .formatted(enemigo.getCoordenadas().getX(), enemigo.getCoordenadas().getY()));
+        System.out.println("Jugador (%d, %d)" .formatted(jugador.getCoordenadas().getX(), jugador.getCoordenadas().getY()));
     }
 }
