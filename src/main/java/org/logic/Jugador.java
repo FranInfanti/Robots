@@ -2,35 +2,23 @@ package org.logic;
 
 import java.util.ArrayList;
 
-public class Jugador {
-    private Coordenadas coordenadas;
+public class Jugador extends Personaje {
     private int teleportsSeguros;
-    private boolean eliminado;
 
     public Jugador(Coordenadas coordenadas, int teleportsDisponibles) {
-        this.coordenadas = coordenadas;
+        super(coordenadas);
         this.teleportsSeguros = teleportsDisponibles;
     }
 
-    public void mover(Coordenadas coordenadas) {
-        Coordenadas distanciaMover = coordenadas.calcularDesplazamiento(coordenadas);
+    @Override
+    public void mover(Coordenadas coordenadas, ArrayList<Enemigo> enemigos) {
+        Coordenadas distanciaMover = getCoordenadas().calcularDesplazamiento(coordenadas);
         int x = distanciaMover.getX() + getCoordenadas().getX();
         int y = distanciaMover.getY() + getCoordenadas().getY();
         setCoordenadas(new Coordenadas(x,y));
     }
 
-    public void teleportSeguro(Coordenadas coordenadas) {
-        if (teleportsSeguros == 0)
-            return;
-
-        this.coordenadas = coordenadas;
-        teleportsSeguros--;
-    }
-
-    public void teleportAleatorio(Coordenadas coordenadas) {
-        this.coordenadas = coordenadas;
-    }
-
+    @Override
     public void isEliminado(ArrayList<Enemigo> enemigos) {
         for (Enemigo enemigo : enemigos) {
             if (getCoordenadas().esIgual(enemigo.getCoordenadas()))
@@ -38,28 +26,23 @@ public class Jugador {
         }
     }
 
-    public void setCoordenadas(Coordenadas coordenadas) {
-        this.coordenadas = coordenadas;
+    public void teleportSeguro(Coordenadas coordenadas) {
+        if (teleportsSeguros == 0)
+            return;
+
+        setCoordenadas(coordenadas);
+        teleportsSeguros--;
+    }
+
+    public void teleportAleatorio(Coordenadas coordenadas) {
+        setCoordenadas(coordenadas);
     }
 
     public void setTeleportsSeguros(int teleportsSeguros) {
         this.teleportsSeguros = teleportsSeguros;
     }
 
-    public void setEliminado(boolean eliminado) {
-        this.eliminado = eliminado;
-    }
-
-    public Coordenadas getCoordenadas() {
-        return coordenadas;
-    }
-
     public int getTeleportsSeguros() {
         return teleportsSeguros;
     }
-
-    public boolean getEliminado() {
-        return eliminado;
-    }
 }
-

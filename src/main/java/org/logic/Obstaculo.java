@@ -9,6 +9,5 @@ public class Obstaculo extends Enemigo {
 
     @Override
     public void mover(Coordenadas coordenadasJugador, ArrayList<Enemigo> enemigos) {
-
     }
 }

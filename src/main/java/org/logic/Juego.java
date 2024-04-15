@@ -83,7 +83,7 @@ public class Juego {
     }
 
     public void moverJugador(Coordenadas coordenadas) {
-        jugador.mover(coordenadas);
+        jugador.mover(coordenadas, null);
         moverRobots();
     }
 
@@ -102,7 +102,6 @@ public class Juego {
 
         return jugador.getEliminado();
     }
-
 
 
     public void borrar() {
