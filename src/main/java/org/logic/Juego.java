@@ -23,7 +23,7 @@ public class Juego {
      * Hace lo que dice que hace, agregar Obstaculos al ArrayList en la posicion que le mando por parametro.
      */
     private void agregarObstaculos(Coordenadas coordenadas) {
-        obstaculos.add(new Obstaculo(coordenadas));
+        obstaculos.add(new Explosion(coordenadas));
     }
 
     /**
@@ -49,8 +49,8 @@ public class Juego {
      */
     private void moverRobots() {
         ArrayList<Enemigo> enemigos = new ArrayList<>();
-        enemigos.addAll(robots);
         enemigos.addAll(obstaculos);
+        enemigos.addAll(robots);
 
         for (Enemigo robot : robots)
             robot.mover(jugador.getCoordenadas(), enemigos);
@@ -62,9 +62,9 @@ public class Juego {
     private int nivelActual;
     private final Mapa mapa;
 
-    private final Jugador jugador;
-    private final ArrayList<Enemigo> robots;
-    private final ArrayList<Enemigo> obstaculos;
+    public final Jugador jugador;
+    public final ArrayList<Enemigo> robots;
+    public final ArrayList<Enemigo> obstaculos;
 
     public Juego(Coordenadas dimensionesMapa) {
         nivelActual = 1;

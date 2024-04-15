@@ -12,7 +12,9 @@ public abstract class Enemigo extends Personaje {
     @Override
     public void isEliminado(ArrayList<Enemigo> enemigos) {
         for (Enemigo enemigo : enemigos) {
-            if (!this.equals(enemigo) && !this.getEliminado()) {
+            if (this.equals(enemigo)){
+                break;
+            } else if (!this.getEliminado()) {
                 if (this.getCoordenadas().esIgual(enemigo.getCoordenadas())) {
                     this.setEliminado(true);
                     enemigo.setEliminado(true);

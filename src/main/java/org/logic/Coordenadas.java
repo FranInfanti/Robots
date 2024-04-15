@@ -1,10 +1,10 @@
 package org.logic;
 
 public class Coordenadas {
-    private final int DERECHA = 1;
-    private final int IZQUIERDA = -1;
-    private final int ARRIBA = -1;
-    private final int ABAJO = 1;
+    private static final int DERECHA = 1;
+    private static final int IZQUIERDA = -1;
+    private static final int ARRIBA = -1;
+    private static final int ABAJO = 1;
 
     private int x;
     private int y;

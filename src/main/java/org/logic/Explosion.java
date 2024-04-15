@@ -2,8 +2,8 @@ package org.logic;
 
 import java.util.ArrayList;
 
-public class Obstaculo extends Enemigo {
-    public Obstaculo(Coordenadas coordenadas) {
+public class Explosion extends Enemigo {
+    public Explosion(Coordenadas coordenadas) {
         super(coordenadas);
     }
 
