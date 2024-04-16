@@ -1,12 +1,13 @@
 package org.logic;
 
+import org.logic.personajes.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Juego {
-    private final int CANTIDAD_ROBOTX1_INICIAL = 8;
-    private final int CANTIDAD_ROBOTX2_INICIAL = 2;
-    private final int TELEPORTS_SEGUROS_DISPONIBLES = 1;
+    private static final int CANTIDAD_ROBOTX1_INICIAL = 8;
+    private static final int CANTIDAD_ROBOTX2_INICIAL = 2;
+    private static final int TELEPORTS_SEGUROS_DISPONIBLES = 1;
 
     /**
      * Aumentamos la variable de nivelActual en uno, borramos todos los Obstaculos, reestablecenmos los teleportsSeguros
@@ -17,6 +18,18 @@ public class Juego {
         obstaculos.clear();
         jugador.setTeleportsSeguros(TELEPORTS_SEGUROS_DISPONIBLES);
         agregarRobots();
+    }
+
+    /**
+     * Verifica si el Jugador fue eliminado, revisando las coordenadas del Jugador y comparandolas
+     * con la de los Enemigos (Robots y Obstaculos). Setea el resultado en el Jugador, usando el metodo
+     * setEliminado()
+     */
+    private void jugadorEliminado(ArrayList<Enemigo> enemigos) {
+        for (Enemigo  enemigo : enemigos) {
+            if (jugador.getCoordenadas().esIgual(enemigo.getCoordenadas()))
+                jugador.setEliminado(true);
+        }
     }
 
     /**
@@ -55,7 +68,7 @@ public class Juego {
         for (Enemigo robot : robots)
             robot.mover(jugador.getCoordenadas(), enemigos);
 
-        jugador.isEliminado(enemigos);
+        jugadorEliminado(enemigos);
         eliminarRobots();
     }
 
@@ -109,8 +122,9 @@ public class Juego {
         enemigos.addAll(robots);
         enemigos.addAll(obstaculos);
 
-        for (Enemigo enemigo : enemigos)
-            System.out.println("Enemigo: (%d, %d)" .formatted(enemigo.getCoordenadas().getX(), enemigo.getCoordenadas().getY()));
+        for (Enemigo enemigo : enemigos) {
+            System.out.println(enemigo.getClass() +  ": (%d, %d)" .formatted(enemigo.getCoordenadas().getX(), enemigo.getCoordenadas().getY()));
+        }
         System.out.println("Jugador (%d, %d)" .formatted(jugador.getCoordenadas().getX(), jugador.getCoordenadas().getY()));
     }
 }

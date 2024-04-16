@@ -1,5 +1,7 @@
 package org.logic;
 
+import org.logic.personajes.Enemigo;
+
 import java.util.ArrayList;
 import java.util.Random;
 

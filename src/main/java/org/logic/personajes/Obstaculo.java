@@ -1,4 +1,6 @@
-package org.logic;
+package org.logic.personajes;
+
+import org.logic.Coordenadas;
 
 import java.util.ArrayList;
 
@@ -8,6 +10,6 @@ public class Obstaculo extends Enemigo {
     }
 
     @Override
-    public void mover(Coordenadas coordenadasJugador, ArrayList<Enemigo> enemigos) {
+    public void mover(Coordenadas coordenadasJugador, ArrayList<?> aux) {
     }
 }

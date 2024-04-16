@@ -8,6 +8,9 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import org.logic.personajes.Enemigo;
+import org.logic.personajes.RobotX1;
+import org.logic.personajes.RobotX2;
 
 
 /**
@@ -44,6 +47,7 @@ public class App extends Application {
         layoutAbajo.getChildren().add(b2);
         layoutAbajo.getChildren().add(b3);
 
+
         GridPane layoutJuego = new GridPane();
         layoutJuego.setStyle("-fx-background-color: black");
         layoutJuego.setMaxSize(600,420);
@@ -58,7 +62,7 @@ public class App extends Application {
                             int x = layoutJuego.getColumnIndex(boton);
                             int y = layoutJuego.getRowIndex(boton);
                             juego.moverJugador(new Coordenadas(x,y));
-                            mostrar(juego, layoutJuego);
+                            //mostrar(juego, layoutJuego);
                         }
                 );
             }
@@ -66,7 +70,7 @@ public class App extends Application {
 
         juego.agregarRobots();
         juego.borrar();
-        mostrar(juego, layoutJuego);
+        //mostrar(juego, layoutJuego);
 
         layoutPrincipal.getChildren().addAll(layoutArriba, layoutJuego, layoutAbajo);
         Scene scene = new Scene(layoutPrincipal, 600, 400);
@@ -75,6 +79,7 @@ public class App extends Application {
         stage.show();
     }
 
+    /*
     public void mostrar(Juego juego, GridPane layoutJuego){
         BuscadorPos buscadorPos = new BuscadorPos();
         for (Node nodo : layoutJuego.getChildren()) {
@@ -98,6 +103,7 @@ public class App extends Application {
         Button boton = buscadorPos.getBotonPorPosicion(juego.jugador.getCoordenadas(), layoutJuego);
         boton.setStyle("-fx-background-color: blue; -fx-border-color: black");
     }
+    */
 
     public static void main(String[] args) {
         launch();

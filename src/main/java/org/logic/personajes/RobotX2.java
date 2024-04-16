@@ -1,4 +1,6 @@
-package org.logic;
+package org.logic.personajes;
+
+import org.logic.Coordenadas;
 
 import java.util.ArrayList;
 
@@ -10,7 +12,7 @@ public class RobotX2 extends Enemigo {
     }
 
     @Override
-    public void mover(Coordenadas coordenadasJugador, ArrayList<Enemigo> enemigos) {
+    public void mover(Coordenadas coordenadasJugador, ArrayList<?> aux) {
         Coordenadas distanciaMover;
         int x, y;
         for (int i = 0; i < DEZSPLAZAMIENTO && !getEliminado(); i++) {
@@ -19,7 +21,7 @@ public class RobotX2 extends Enemigo {
             y = distanciaMover.getY() + getCoordenadas().getY();
 
             setCoordenadas(new Coordenadas(x,y));
-            this.isEliminado(enemigos);
+            this.isEliminado(aux);
         }
     }
 }

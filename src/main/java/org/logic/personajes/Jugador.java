@@ -1,4 +1,6 @@
-package org.logic;
+package org.logic.personajes;
+
+import org.logic.Coordenadas;
 
 import java.util.ArrayList;
 
@@ -11,7 +13,7 @@ public class Jugador extends Personaje {
     }
 
     @Override
-    public void mover(Coordenadas coordenadas, ArrayList<Enemigo> enemigos) {
+    public void mover(Coordenadas coordenadas, ArrayList<?> aux) {
         Coordenadas distanciaMover = getCoordenadas().calcularDesplazamiento(coordenadas);
         int x = distanciaMover.getX() + getCoordenadas().getX();
         int y = distanciaMover.getY() + getCoordenadas().getY();
@@ -19,7 +21,8 @@ public class Jugador extends Personaje {
     }
 
     @Override
-    public void isEliminado(ArrayList<Enemigo> enemigos) {
+    public void isEliminado(ArrayList<?> aux) {
+        ArrayList<Enemigo> enemigos = (ArrayList<Enemigo>) aux;
         for (Enemigo enemigo : enemigos) {
             if (getCoordenadas().esIgual(enemigo.getCoordenadas()))
                 setEliminado(true);

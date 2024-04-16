@@ -1,4 +1,6 @@
-package org.logic;
+package org.logic.personajes;
+
+import org.logic.Coordenadas;
 
 import java.util.ArrayList;
 
@@ -11,9 +13,9 @@ public abstract class Personaje {
         eliminado = false;
     }
 
-    public abstract void mover(Coordenadas coordenadasJugador, ArrayList<Enemigo> enemigos);
+    public abstract void mover(Coordenadas coordenadasJugador, ArrayList<?> aux);
 
-    public abstract void isEliminado(ArrayList<Enemigo> enemigos);
+    public abstract void isEliminado(ArrayList<?> aux);
 
     public void setEliminado(boolean eliminado) {
         this.eliminado = eliminado;
