@@ -3,70 +3,54 @@ package org.logic;
 import org.logic.personajes.*;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 public class Juego {
     private static final int CANTIDAD_ROBOTX1_INICIAL = 8;
     private static final int CANTIDAD_ROBOTX2_INICIAL = 2;
     private static final int TELEPORTS_SEGUROS_DISPONIBLES = 1;
 
-    /**
-     * Aumentamos la variable de nivelActual en uno, borramos todos los Obstaculos, reestablecenmos los teleportsSeguros
-     * y agregamos nuevamente los Robots.
-     */
     private void avanzarNivel() {
         nivelActual++;
-        obstaculos.clear();
+        explosiones.clear();
         jugador.setTeleportsSeguros(TELEPORTS_SEGUROS_DISPONIBLES);
         agregarRobots();
     }
 
-    /**
-     * Verifica si el Jugador fue eliminado, revisando las coordenadas del Jugador y comparandolas
-     * con la de los Enemigos (Robots y Obstaculos). Setea el resultado en el Jugador, usando el metodo
-     * setEliminado()
-     */
-    private void jugadorEliminado(ArrayList<Enemigo> enemigos) {
-        for (Enemigo  enemigo : enemigos) {
+    private void jugadorEliminado(LinkedList<Enemigo> enemigos) {
+        for (Enemigo enemigo : enemigos) {
             if (jugador.getCoordenadas().esIgual(enemigo.getCoordenadas()))
                 jugador.setEliminado(true);
         }
     }
 
-    /**
-     * Hace lo que dice que hace, agregar Obstaculos al ArrayList en la posicion que le mando por parametro.
-     */
-    private void agregarObstaculos(Coordenadas coordenadas) {
-        obstaculos.add(new Obstaculo(coordenadas));
-    }
-
-    /**
-     * Recorre los Robots y verifica cuales fueron eliminados, y si lo fueron, agrega un Obstaculo en su posicion.
-     * Aca esta agregando un Obstaculo por c/u de los Robots destruidos, habria que ver una forma de que solo agrege
-     * si colisionaron dos Robots, o recorrer el ArrayList de los Obstaculos y eliminar los Obstaculos que coinciden
-     * en la misma posicion.
-     */
-    private void eliminarRobots() {
-        Iterator<Enemigo> iterator = robots.iterator();
-        while (iterator.hasNext()) {
-            Enemigo robot = iterator.next();
-            if (robot.getEliminado()) {
-                agregarObstaculos(robot.getCoordenadas());
-                iterator.remove();
-            }
+    private void agregarExplosion(Coordenadas coordenadas) {
+        boolean coordenadaExiste = false;
+        Iterator<Enemigo> iterator = explosiones.iterator();
+        while (iterator.hasNext() && !coordenadaExiste) {
+            Enemigo actual = iterator.next();
+            if (actual.getCoordenadas().esIgual(coordenadas))
+                coordenadaExiste = true;
         }
+
+        if (!coordenadaExiste)
+            explosiones.add(new Explosion(coordenadas));
     }
 
-    /**
-     * Agarra y crea un ArrayList con todos los Enemigos y se lo manda al metodo mover() del Robot.
-     * Antes de eliminar los Robots que fueron eliminados, verifica si el Jugador fue eliminado.
-     */
-    private void moverRobots() {
-        ArrayList<Enemigo> enemigos = new ArrayList<>();
-        enemigos.addAll(robots);
-        enemigos.addAll(obstaculos);
+    private void eliminarRobots() {
+        robots.removeIf(Personaje::getEliminado);
+    }
 
-        for (Enemigo robot : robots)
-            robot.mover(jugador.getCoordenadas(), enemigos);
+    private void moverEnemigos() {
+        LinkedList<Enemigo> enemigos = new LinkedList<>();
+        enemigos.addAll(explosiones);
+        enemigos.addAll(robots);
+
+        for (Enemigo actual : robots) {
+            actual.mover(jugador.getCoordenadas(), enemigos);
+            if (actual.getEliminado())
+                agregarExplosion(actual.getCoordenadas());
+        }
 
         jugadorEliminado(enemigos);
         eliminarRobots();
@@ -75,16 +59,16 @@ public class Juego {
     private int nivelActual;
     private final Mapa mapa;
 
-    private final Jugador jugador;
-    private final ArrayList<Enemigo> robots;
-    private final ArrayList<Enemigo> obstaculos;
+    public final Jugador jugador;
+    public final LinkedList<Enemigo> robots;
+    public final LinkedList<Enemigo> explosiones;
 
     public Juego(Coordenadas dimensionesMapa) {
         nivelActual = 1;
         mapa = new Mapa(dimensionesMapa);
         jugador = new Jugador(mapa.getCentroMapa(), TELEPORTS_SEGUROS_DISPONIBLES);
-        robots = new ArrayList<>();
-        obstaculos = new ArrayList<>();
+        robots = new LinkedList<>();
+        explosiones = new LinkedList<>();
     }
 
     public void agregarRobots() {
@@ -97,7 +81,7 @@ public class Juego {
 
     public void moverJugador(Coordenadas coordenadas) {
         jugador.mover(coordenadas, null);
-        moverRobots();
+        moverEnemigos();
     }
 
     public void teleportJugador(Coordenadas coordenadas) {
@@ -106,21 +90,44 @@ public class Juego {
         else
             jugador.teleportAleatorio(mapa.generarCoordenada(null));
 
-        moverRobots();
+        moverEnemigos();
     }
 
-    public boolean finalizado() {
+    public void estadoJuego() {
         if (robots.isEmpty() && !jugador.getEliminado())
             avanzarNivel();
+    }
 
+    public boolean getJugadorEliminado() {
         return jugador.getEliminado();
     }
 
+    public int getCantidadEnemigos() {
+        return explosiones.size() + robots.size();
+    }
+
+    public Enemigo getEnemigo(int index) {
+        if (index > getCantidadEnemigos())
+            return null;
+
+        LinkedList<Enemigo> enemigos = new LinkedList<>();
+        enemigos.addAll(explosiones);
+        enemigos.addAll(robots);
+        return enemigos.get(index);
+    }
+
+    public Coordenadas getDimensionesMapa() {
+        return mapa.getDimensionMapa();
+    }
+
+    public Coordenadas getCoordenadasJugador() {
+        return jugador.getCoordenadas();
+    }
 
     public void borrar() {
         ArrayList<Enemigo> enemigos = new ArrayList<>();
+        enemigos.addAll(explosiones);
         enemigos.addAll(robots);
-        enemigos.addAll(obstaculos);
 
         for (Enemigo enemigo : enemigos) {
             System.out.println(enemigo.getClass() +  ": (%d, %d)" .formatted(enemigo.getCoordenadas().getX(), enemigo.getCoordenadas().getY()));

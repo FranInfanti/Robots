@@ -1,18 +1,16 @@
 package org.logic;
 
 import org.logic.personajes.Enemigo;
-
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 
 public class Mapa {
-    private boolean coordenadaOcupada(Coordenadas coordenada, ArrayList<?> aux) {
-        if (aux == null)
+    private boolean coordenadaOcupada(Coordenadas coordenada, LinkedList<Enemigo> enemigos) {
+        if (enemigos == null)
             return false;
 
         boolean ocupada = false;
-        for (Object object : aux) {
-            Enemigo enemigo = (Enemigo) object;
+        for (Enemigo enemigo : enemigos) {
             if (coordenada.esIgual(enemigo.getCoordenadas()) || coordenada.esIgual(getCentroMapa()))
                 ocupada = true;
         }
@@ -27,12 +25,12 @@ public class Mapa {
         rand = new Random();
     }
 
-    public Coordenadas generarCoordenada(ArrayList<?> aux) {
+    public Coordenadas generarCoordenada(LinkedList<Enemigo> enemigos) {
         Coordenadas aleatorias = new Coordenadas(0,0);
         do {
             aleatorias.setX(rand.nextInt(dimensionMapa.getX()));
             aleatorias.setY(rand.nextInt(dimensionMapa.getY()));
-        } while (coordenadaOcupada(aleatorias, aux));
+        } while (coordenadaOcupada(aleatorias, enemigos));
         return aleatorias;
     }
 
@@ -42,5 +40,9 @@ public class Mapa {
 
     public Coordenadas getCentroMapa() {
         return new Coordenadas(dimensionMapa.getX() / 2, dimensionMapa.getY() / 2);
+    }
+
+    public Coordenadas getDimensionMapa() {
+        return dimensionMapa;
     }
 }
