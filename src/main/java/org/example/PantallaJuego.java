@@ -11,6 +11,9 @@ import org.logic.RobotX1;
 import org.logic.RobotX2;
 
 public class PantallaJuego {
+    Estilos estilos = new Estilos();
+    Direcciones direcciones = new Direcciones();
+
     private void colocarImg(Button boton, String path){
         Image image = new Image(path);
         ImageView imageView = new ImageView(image);
@@ -24,25 +27,25 @@ public class PantallaJuego {
         BuscadorPos buscadorPos = new BuscadorPos();
         for (Node nodo : layoutJuego.getChildren()) {
             Button boton = (Button) nodo;
-            boton.setStyle("-fx-background-color: #003380ff;  -fx-background-radius: 10");
+            boton.setStyle(estilos.getCasillaEstilo());
             boton.setGraphic(null);
         }
 
         Button boton = buscadorPos.getBotonPorPosicion(juego.jugador.getCoordenadas(), layoutJuego);
-        colocarImg(boton, "player.png");
+        colocarImg(boton, direcciones.getPlayerDir());
 
         for (Enemigo robot : juego.robots) {
             Button botonRobot = buscadorPos.getBotonPorPosicion(robot.getCoordenadas(), layoutJuego);
 
             if (robot instanceof RobotX1){
-                colocarImg(botonRobot, "X1.png");
+                colocarImg(botonRobot, direcciones.getX1Dir());
             } else if (robot instanceof RobotX2){
-                colocarImg(botonRobot, "X2.png");;
+                colocarImg(botonRobot, direcciones.getX2Dir());;
             }
         }
         for (Enemigo robot : juego.obstaculos) {
             Button botonObs = buscadorPos.getBotonPorPosicion(robot.getCoordenadas(), layoutJuego);
-            colocarImg(botonObs, "explosion.png");
+            colocarImg(botonObs, direcciones.getX2Dir());
         }
     }
 }
