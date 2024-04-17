@@ -5,6 +5,10 @@ public class Estilos {
         return "-fx-font-family: Arial; -fx-font-weight: 900; -fx-font-size: 30; -fx-text-fill: #aaccffff";
     }
 
+    public String getMenuEstilo() {
+        return "-fx-background-color: #003380ff; -fx-alignment: RIGHT";
+    }
+
     public String getBotonEstilo() {
         return "-fx-font-family: Arial; -fx-font-weight: 900; -fx-text-fill: #aaccffff; -fx-font-size: 20; -fx-background-color: #003380ff;  -fx-background-radius: 20;";
     }
