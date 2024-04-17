@@ -2,14 +2,16 @@ package org.logic;
 
 public class Main {
     public static void main(String[] args) {
-        Juego juego = new Juego(new Coordenadas(10,10));
+        Juego juego = new Juego(new Coordenadas(25,25));
         juego.agregarRobots();
 
-        do {
+        while (!juego.getJugadorEliminado()) {
+            juego.estadoJuego();
             juego.borrar();
-            System.out.println("-----------------");
+            System.out.println("---------------");
             juego.teleportJugador(null);
-            juego.borrar();
-        } while(!juego.finalizado());
+        }
+        juego.borrar();
+
     }
 }

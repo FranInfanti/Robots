@@ -1,7 +1,6 @@
 package org.example;
 
 public class Textos {
-
     public String getTituloJuego() {
         return "Robots";
     }
@@ -17,5 +16,4 @@ public class Textos {
     public String getB3texto() {
         return "Wait for robots";
     }
-
 }

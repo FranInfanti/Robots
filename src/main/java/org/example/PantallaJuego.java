@@ -2,26 +2,22 @@ package org.example;
 
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.image.*;
 import javafx.scene.layout.GridPane;
-import org.logic.Enemigo;
 import org.logic.Juego;
-import org.logic.RobotX1;
-import org.logic.RobotX2;
+import org.logic.personajes.*;
 
 public class PantallaJuego {
     Estilos estilos = new Estilos();
     Direcciones direcciones = new Direcciones();
 
-    private void colocarImg(Button boton, String path){
-        Image image = new Image(path);
-        ImageView imageView = new ImageView(image);
+    private void colocarImagen(Button boton, String path) {
+        Image imagen = new Image(path);
+        ImageView imageView = new ImageView(imagen);
         imageView.setFitHeight(25);
         imageView.setPreserveRatio(true);
         boton.setGraphic(imageView);
     }
-
 
     public void mostrar(Juego juego, GridPane layoutJuego) {
         BuscadorPos buscadorPos = new BuscadorPos();
@@ -31,21 +27,21 @@ public class PantallaJuego {
             boton.setGraphic(null);
         }
 
-        Button boton = buscadorPos.getBotonPorPosicion(juego.jugador.getCoordenadas(), layoutJuego);
-        colocarImg(boton, direcciones.getPlayerDir());
+        Button boton = buscadorPos.getBotonPorPosicion(juego.getCoordenadasJugador(), layoutJuego);
+        colocarImagen(boton, direcciones.getImagenJugador());
 
-        for (Enemigo robot : juego.robots) {
-            Button botonRobot = buscadorPos.getBotonPorPosicion(robot.getCoordenadas(), layoutJuego);
+        for (int i = 0; i < juego.getCantidadEnemigos(); i++) {
+            Enemigo enemigo = juego.getEnemigo(i);
+            if (enemigo != null) {
+                Button botonEnemigo = buscadorPos.getBotonPorPosicion(enemigo.getCoordenadas(), layoutJuego);
 
-            if (robot instanceof RobotX1){
-                colocarImg(botonRobot, direcciones.getX1Dir());
-            } else if (robot instanceof RobotX2){
-                colocarImg(botonRobot, direcciones.getX2Dir());;
+                if (enemigo instanceof RobotX1)
+                    colocarImagen(botonEnemigo, direcciones.getImagenRobotX1());
+                else if (enemigo instanceof RobotX2)
+                    colocarImagen(botonEnemigo, direcciones.getImagenRobotX2());
+                else
+                    colocarImagen(botonEnemigo, direcciones.getImagenExplosion());
             }
-        }
-        for (Enemigo robot : juego.obstaculos) {
-            Button botonObs = buscadorPos.getBotonPorPosicion(robot.getCoordenadas(), layoutJuego);
-            colocarImg(botonObs, direcciones.getX2Dir());
         }
     }
 }

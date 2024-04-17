@@ -1,19 +1,19 @@
 package org.example;
 
 public class Direcciones {
-    public String getPlayerDir(){
+    public String getImagenJugador() {
         return "player.png";
     }
 
-    public String getX1Dir(){
+    public String getImagenRobotX1() {
         return "X1.png";
     }
 
-    public String getX2Dir(){
+    public String getImagenRobotX2() {
         return "X2.png";
     }
 
-    public String getExplosionDir(){
+    public String getImagenExplosion() {
         return "Explosion.png";
     }
 }

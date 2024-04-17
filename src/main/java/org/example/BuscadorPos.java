@@ -8,13 +8,12 @@ import org.logic.Coordenadas;
 
 public class BuscadorPos {
     public Button getBotonPorPosicion(Coordenadas posicion, GridPane gridPane) {
-        Button botonEncontrado = null;
+        Button buscado = null;
         ObservableList<Node> botones = gridPane.getChildren();
         for (Node boton : botones) {
-            if(gridPane.getRowIndex(boton) == posicion.getY() && gridPane.getColumnIndex(boton) == posicion.getX()) {
-                botonEncontrado = (Button) boton;
-            }
+            if (posicion.esIgual(new Coordenadas(GridPane.getColumnIndex(boton), GridPane.getRowIndex(boton))))
+                buscado = (Button) boton;
         }
-        return botonEncontrado;
+        return buscado;
     }
 }
