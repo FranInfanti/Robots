@@ -18,6 +18,6 @@ public class Estilos {
     }
 
     public String getCasillaEstilo() {
-        return "-fx-cursor: pointer; -fx-background-color: #003380ff;  -fx-background-radius: 10";
+        return "-fx-cursor: pointer; -fx-background-color: #003380ff;  -fx-background-radius: ";
     }
 }

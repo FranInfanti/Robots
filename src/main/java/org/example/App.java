@@ -8,9 +8,7 @@ import javafx.stage.Stage;
 public class App extends Application {
     @Override
     public void start(Stage stage) {
-        Juego juego = new Juego(new Coordenadas(15,10));
-        juego.agregarRobots();
-        Vista vista = new Vista(stage, juego);
+        Vista vista = new Vista(stage);
     }
 
     public static void main(String[] args) {
