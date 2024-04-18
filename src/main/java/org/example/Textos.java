@@ -9,8 +9,9 @@ public class Textos {
         return "Teleport Random";
     }
 
-    public String getB2texto() {
-        return "Teleport Safely";
+    public String getB2texto(int teleportsDisponibles) {
+        return "Teleport Safely\n" +
+                " (Remaining: %d)" .formatted(teleportsDisponibles);
     }
 
     public String getB3texto() {

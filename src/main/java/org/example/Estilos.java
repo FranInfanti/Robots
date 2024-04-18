@@ -10,7 +10,7 @@ public class Estilos {
     }
 
     public String getBotonEstilo() {
-        return "-fx-font-family: Arial; -fx-font-weight: 900; -fx-text-fill: #aaccffff; -fx-font-size: 20; -fx-background-color: #003380ff;  -fx-background-radius: 20;";
+        return "-fx-font-family: Arial; -fx-font-weight: 900; -fx-text-fill: #aaccffff; -fx-font-size: 18; -fx-background-color: #003380ff;  -fx-background-radius: 20;";
     }
 
     public String getFondoEstilo() {

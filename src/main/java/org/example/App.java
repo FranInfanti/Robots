@@ -11,6 +11,11 @@ public class App extends Application {
         Juego juego = new Juego(new Coordenadas(15,10));
         juego.agregarRobots();
         Vista vista = new Vista(stage, juego);
+
+        vista.setListenerTeleportRandom();
+        vista.setListenerTeleportSeguro();
+        vista.setListenerWaitForRobots();
+        vista.setListenerFinDeJuego();
     }
 
     public static void main(String[] args) {

@@ -1,40 +1,16 @@
 package org.example;
 
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import org.logic.Coordenadas;
 import org.logic.Juego;
 
 public class Vista {
-    private void setListenersLayoutAbajo() {
-        teleportRandom.setOnAction(_ -> {
-            if (!juego.getJugadorEliminado()) {
-                juego.teleportJugador(null);
-                pantallaJuego.mostrar(juego, layoutJuego);
-            }
-        });
-
-        teleportSeguro.setOnAction(_ -> {
-            if (!juego.getJugadorEliminado())
-                telePortActivado = true;
-        });
-
-        waitForRobots.setOnAction(_ -> {
-            if (!juego.getJugadorEliminado()) {
-                juego.moverJugador(juego.getCoordenadasJugador());
-                pantallaJuego.mostrar(juego, layoutJuego);
-            }
-        });
-    }
+    private static final int ALTURA_SCENE = 600;
+    private static final int ANCHO_SCENE = 400;
 
     private void setListenerBoton(Button boton) {
         boton.setOnAction(_ -> {
@@ -45,18 +21,19 @@ public class Vista {
                 juego.teleportJugador(new Coordenadas(x,y));
             } else if (!juego.getJugadorEliminado())
                 juego.moverJugador(new Coordenadas(x, y));
-            pantallaJuego.mostrar(juego, layoutJuego);
+            teleportSeguro.setText(textos.getB2texto(juego.getTeleportsDisponibles()));
+            pantallaJuego.mostrar(juego, layoutJuego, finDeJuego);
         });
     }
 
-    private void setGrillaLayoutJuego() {
+    private void setListenersGrillaJuego() {
         Coordenadas dimensionesMapa = juego.getDimensionesMapa();
-        for (int fil = 0; fil < dimensionesMapa.getX(); fil++) {
-            for (int col = 0; col < dimensionesMapa.getY(); col++) {
+        for (int x = 0; x < dimensionesMapa.getX(); x++) {
+            for (int y = 0; y < dimensionesMapa.getY(); y++) {
                 Button boton = new Button();
                 boton.setMaxSize(25,25);
                 boton.setMinSize(25,25);
-                layoutJuego.add(boton, fil, col);
+                layoutJuego.add(boton, x, y);
                 setListenerBoton(boton);
             }
         }
@@ -68,23 +45,19 @@ public class Vista {
         layoutPrincipal.setStyle(estilos.getFondoEstilo());
         layoutPrincipal.getChildren().addAll(layoutArriba, layoutJuego, layoutAbajo);
 
-        layoutArriba.getChildren().addAll(tituloDeJuego, menuDesplegable);
+        layoutArriba.getChildren().add(tituloDeJuego);
         layoutArriba.setStyle(estilos.getFondoEstilo());
         tituloDeJuego.setStyle(estilos.getTituloEstilo());
-        menuDesplegable.setStyle(estilos.getMenuEstilo());
-        menuDesplegable.setDisable(true);
-        menuDesplegable.setPrefSize(5,5);
 
         layoutAbajo.getChildren().addAll(teleportRandom, teleportSeguro, waitForRobots);
         layoutAbajo.setStyle(estilos.getFondoEstilo());
         for (Node nodo : layoutAbajo.getChildren()) {
             Button boton = (Button) nodo;
-            boton.setPrefSize(200,40);
+            boton.setPrefSize(350,60);
             boton.setStyle(estilos.getBotonEstilo());
         }
 
-        setGrillaLayoutJuego();
-        setListenersLayoutAbajo();
+        setListenersGrillaJuego();
 
         layoutJuego.setMaxSize(400,400);
         layoutJuego.setHgap(3);
@@ -92,19 +65,19 @@ public class Vista {
         layoutJuego.setStyle(estilos.getFondoEstilo());
     }
 
-    private final PantallaJuego pantallaJuego;
+    private final Pantalla pantallaJuego;
     private final Textos textos;
     private final Estilos estilos;
     private boolean telePortActivado;
 
     private final Juego juego;
+    private final FinDeJuego finDeJuego;
 
     private final VBox layoutPrincipal;
     private final HBox layoutArriba;
     private final GridPane layoutJuego;
     private final HBox layoutAbajo;
 
-    private final ChoiceBox menuDesplegable;
     private final Label tituloDeJuego;
     private final Button teleportRandom;
     private final Button teleportSeguro;
@@ -112,9 +85,10 @@ public class Vista {
 
     public Vista(Stage stage, Juego juego) {
         this.juego = juego;
+        finDeJuego = new FinDeJuego();
 
         telePortActivado = false;
-        pantallaJuego = new PantallaJuego();
+        pantallaJuego = new Pantalla();
         textos = new Textos();
         estilos = new Estilos();
 
@@ -123,17 +97,53 @@ public class Vista {
         layoutJuego = new GridPane();
         layoutAbajo = new HBox();
 
-        menuDesplegable = new ChoiceBox<>();
         tituloDeJuego = new Label(textos.getTituloJuego());
         teleportRandom = new Button(textos.getB1texto());
-        teleportSeguro = new Button(textos.getB2texto());
+        teleportSeguro = new Button(textos.getB2texto(juego.getTeleportsDisponibles()));
         waitForRobots = new Button(textos.getB3texto());
 
         setVista();
 
-        pantallaJuego.mostrar(juego, layoutJuego);
-        stage.setScene(new Scene(layoutPrincipal, 600, 400));
+        pantallaJuego.mostrar(juego, layoutJuego, finDeJuego);
+        stage.setScene(new Scene(layoutPrincipal, ALTURA_SCENE, ANCHO_SCENE));
         stage.setResizable(false);
         stage.show();
+    }
+
+    public void setListenerTeleportRandom() {
+        teleportRandom.setOnAction(_ -> {
+            if (juego.getJugadorEliminado())
+                return;
+            juego.teleportJugador(null);
+            pantallaJuego.mostrar(juego, layoutJuego, finDeJuego);
+        });
+    }
+
+    public void setListenerTeleportSeguro() {
+        teleportSeguro.setOnAction(_ -> {
+            if (juego.getJugadorEliminado())
+                return;
+            telePortActivado = true;
+        });
+    }
+
+    public void setListenerWaitForRobots() {
+        waitForRobots.setOnAction(_ -> {
+            if (juego.getJugadorEliminado())
+                return;
+            juego.moverJugador(juego.getCoordenadasJugador());
+            pantallaJuego.mostrar(juego, layoutJuego, finDeJuego);
+        });
+    }
+
+    public void setListenerFinDeJuego() {
+        layoutJuego.addEventHandler(FinDeJuego.FIN_DE_JUEGO_EVENT_TYPE, event -> {
+            if (juego.getJugadorEliminado())
+                return;
+            else
+                juego.estadoJuego();
+
+            event.consume();
+        });
     }
 }

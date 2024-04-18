@@ -6,7 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import org.logic.Coordenadas;
 
-public class BuscadorPos {
+public class BuscadorBoton {
     public Button getBotonPorPosicion(Coordenadas posicion, GridPane gridPane) {
         Button buscado = null;
         ObservableList<Node> botones = gridPane.getChildren();
