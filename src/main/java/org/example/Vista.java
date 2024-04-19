@@ -1,6 +1,7 @@
 package org.example;
 
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import org.example.eventos.*;
 import javafx.scene.Node;
@@ -18,6 +19,11 @@ public class Vista {
     private static final int ANCHO_GRILLA = 400;
     private static final int ALTO_BOTON = 65;
     private static final int ANCHO_BOTON = 200;
+    private static final int MIN_FIL = 10;
+    private static final int MAX_FIL = 30;
+    private static final int MIN_COL = 10;
+    private static final int MAX_COL = 30;
+
 
     private void fireAlerta() {
         Alert alerta = new Alert(Alert.AlertType.NONE);
@@ -31,6 +37,8 @@ public class Vista {
         layoutGeneral.addEventHandler(EventoDeInicio.INICIO_DE_JUEGO_EVENT_TYPE, event -> {
             layoutInicio.setDisable(false);
             layoutInicio.setOpacity(1);
+            layoutJuego.setDisable(true);
+            actualizarEstilos();
             event.consume();
         });
     }
@@ -57,43 +65,46 @@ public class Vista {
         inicioJuego.setOnAction(_ -> {
             layoutInicio.setDisable(true);
             layoutInicio.setOpacity(0);
+            layoutJuego.setDisable(false);
 
             juego = new Juego(new Coordenadas((int) cantidadColumnas.getValue(), (int) cantidadFilas.getValue()));
             juego.agregarRobots();
+            telePortActivado = false;
             setGrillaLayoutJuego();
-            pantalla.mostrar(juego, layoutGrilla, eventoDeFin, sizeBoton);
+            pantalla.mostrar(juego, layoutGrilla, eventoDeFin, telePortActivado);
         });
 
         teleportRandom.setOnAction(_ -> {
             if (juego.getJugadorEliminado() || telePortActivado)
                 return;
             juego.teleportJugador(null);
-            pantalla.mostrar(juego, layoutGrilla, eventoDeFin, sizeBoton);
+            pantalla.mostrar(juego, layoutGrilla, eventoDeFin, telePortActivado);
         });
 
         teleportSeguro.setOnAction(_ -> {
             if (!juego.getJugadorEliminado())
                 telePortActivado = true;
+                pantalla.mostrar(juego, layoutGrilla, eventoDeFin, telePortActivado);
         });
 
         waitForRobots.setOnAction(_ -> {
-            if (juego.getJugadorEliminado())
+            if (juego.getJugadorEliminado() || telePortActivado)
                 return;
             juego.moverJugador(juego.getCoordenadasJugador());
-            pantalla.mostrar(juego, layoutGrilla, eventoDeFin, sizeBoton);
+            pantalla.mostrar(juego, layoutGrilla, eventoDeFin, telePortActivado);
         });
     }
 
     private void setListenerBotonGrilla(Button boton) {
         boton.setOnAction(_ -> {
-            int x = GridPane.getColumnIndex(boton);
-            int y = GridPane.getRowIndex(boton);
+            int x = layoutGrilla.getColumnIndex(boton);
+            int y = layoutGrilla.getRowIndex(boton);
             if (telePortActivado) {
                 telePortActivado = false;
                 juego.teleportJugador(new Coordenadas(x,y));
             } else if (!juego.getJugadorEliminado())
                 juego.moverJugador(new Coordenadas(x, y));
-            pantalla.mostrar(juego, layoutGrilla, eventoDeFin, sizeBoton);
+            pantalla.mostrar(juego, layoutGrilla, eventoDeFin, telePortActivado);
         });
     }
 
@@ -105,7 +116,7 @@ public class Vista {
 
     private void setGrillaLayoutJuego() {
         Coordenadas dimensionesMapa = juego.getDimensionesMapa();
-        sizeBoton = getSizeBoton(dimensionesMapa);
+        int sizeBoton = getSizeBoton(dimensionesMapa);
         layoutGrilla.getChildren().clear();
         for (int fil = 0; fil < dimensionesMapa.getX(); fil++) {
             for (int col = 0; col < dimensionesMapa.getY(); col++) {
@@ -115,6 +126,53 @@ public class Vista {
                 layoutGrilla.add(boton, fil, col);
                 setListenerBotonGrilla(boton);
             }
+        }
+    }
+
+    private void setListenerSelec(){
+        layoutGeneral.addEventFilter(KeyEvent.KEY_RELEASED, _ -> {
+            actualizarEstilos();
+        });
+        layoutGeneral.setOnMouseReleased(_ -> {
+            actualizarEstilos();
+        });
+    }
+
+
+    private void setEstilo(Node nodo){
+        if (nodo instanceof Slider){
+            nodo.setStyle(archivo.getEstiloSlider());
+            if (nodo.isFocused()){
+                nodo.setStyle(archivo.getEstiloSliderSelec());
+            }
+            return;
+        }
+        if (nodo instanceof Button) {
+            nodo.setStyle(archivo.getEstiloDeBoton());
+            if (nodo.isFocused()) {
+                nodo.setStyle(archivo.getEstiloDeBotonSelec());
+            }
+        }
+    }
+
+    private void actualizarEstilos(){
+        setEstilo(teleportRandom);
+        setEstilo(teleportSeguro);
+        setEstilo(waitForRobots);
+        setEstilo(inicioJuego);
+        setEstilo(nuevoJuego);
+        setEstilo(cantidadColumnas);
+        setEstilo(cantidadFilas);
+
+        if (cantidadColumnas.isFocused())
+            cantidadColumnas.setStyle(archivo.getEstiloSliderSelec());
+        if (cantidadFilas.isFocused())
+            cantidadFilas.setStyle(archivo.getEstiloSliderSelec());
+        for (Node nodo : layoutGrilla.getChildren()) {
+            Button boton = (Button) nodo;
+            boton.setStyle(archivo.getEstiloCasilla() + boton.getWidth() / 5);
+            if (boton.isFocused())
+                boton.setStyle(archivo.getEstiloCasillaSelec() + boton.getWidth() / 5);
         }
     }
 
@@ -142,7 +200,6 @@ public class Vista {
         layoutAbajo.setStyle(archivo.getEstiloDeHbox());
         for (Node nodo : layoutAbajo.getChildren()) {
             Button boton = (Button) nodo;
-
             boton.setPrefSize(ANCHO_BOTON,ALTO_BOTON);
             boton.setStyle(archivo.getEstiloDeBoton());
         }
@@ -176,7 +233,6 @@ public class Vista {
     private final Button nuevoJuego;
     private final Slider cantidadColumnas;
     private final Slider cantidadFilas;
-    private int sizeBoton;
 
     public Vista(Stage stage) {
         eventoDeInicio = new EventoDeInicio();
@@ -195,8 +251,8 @@ public class Vista {
 
         inicioJuego = new Button(archivo.getTextoDeInicioJuego());
         nuevoJuego = new Button(archivo.getTextoDeNuevoJuego());
-        cantidadFilas = new Slider(10,30,10);
-        cantidadColumnas = new Slider(10,30,10);
+        cantidadFilas = new Slider(MIN_FIL,MAX_FIL,MIN_FIL);
+        cantidadColumnas = new Slider(MIN_COL,MAX_COL,MIN_COL);
 
         tituloJuego = new Label(archivo.getTextoDeTituloJuego());
         teleportRandom = new Button(archivo.getTextoDeTeleportRandom());
@@ -215,6 +271,7 @@ public class Vista {
         setListenerEventoInicio();
         setListenerEventoFin();
         setListenersBotones();
+        setListenerSelec();
         layoutGeneral.fireEvent(eventoDeInicio);
     }
 }

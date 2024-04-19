@@ -6,22 +6,30 @@ import javafx.scene.control.Button;
 import javafx.scene.image.*;
 import javafx.scene.layout.GridPane;
 import org.example.eventos.EventoDeFin;
+import org.logic.Coordenadas;
 import org.logic.Juego;
 import org.logic.personajes.*;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+
 public class Pantalla {
-    private void setEstiloCasilla(ObservableList <Node> nodos, int sizeButton) {
-        for (Node nodo : nodos) {
+
+    private void setEstiloCasilla(GridPane layoutJuego, Coordenadas posicionJugador, boolean telePortActivado) {
+        for (Node nodo : layoutJuego.getChildren()) {
             Button boton = (Button) nodo;
-            boton.setStyle(archivo.getEstiloCasilla() + sizeButton / 5);
+            boton.setStyle(archivo.getEstiloCasilla() + boton.getMaxWidth() / 5);
             boton.setGraphic(null);
+            boton.setDisable(true);
+            if ((Math.abs(posicionJugador.getX() - layoutJuego.getColumnIndex(boton)) <= 1 &&  Math.abs(posicionJugador.getY() - layoutJuego.getRowIndex(boton)) <= 1) || telePortActivado)
+                boton.setDisable(false);
         }
     }
 
-    private void colocarImagen(Button boton, String path, int sizeBoton) {
+    private void colocarImagen(Button boton, String path) {
         Image imagen = new Image(path);
         ImageView imageView = new ImageView(imagen);
-        imageView.setFitHeight(sizeBoton);
+        imageView.setFitHeight(boton.getMaxWidth());
         imageView.setPreserveRatio(true);
         boton.setGraphic(imageView);
     }
@@ -34,12 +42,12 @@ public class Pantalla {
         buscadorBoton = new BuscadorBoton();
     }
 
-    public void mostrar(Juego juego, GridPane layoutJuego, EventoDeFin eventoDeFin, int sizeBoton) {
-        setEstiloCasilla(layoutJuego.getChildren(), sizeBoton);
+    public void mostrar(Juego juego, GridPane layoutJuego, EventoDeFin eventoDeFin, boolean telePortActivado) {
+        setEstiloCasilla(layoutJuego, juego.jugador.getCoordenadas(), telePortActivado);
         layoutJuego.fireEvent(eventoDeFin);
 
         Button boton = buscadorBoton.getBotonPorPosicion(juego.getCoordenadasJugador(), layoutJuego);
-        colocarImagen(boton, archivo.getImagenJugador(), sizeBoton);
+        colocarImagen(boton, archivo.getImagenJugador());
 
         for (int i = 0; i < juego.getCantidadEnemigos(); i++) {
             Enemigo enemigo = juego.getEnemigo(i);
@@ -47,11 +55,11 @@ public class Pantalla {
                 Button botonEnemigo = buscadorBoton.getBotonPorPosicion(enemigo.getCoordenadas(), layoutJuego);
 
                 if (enemigo instanceof RobotX1)
-                    colocarImagen(botonEnemigo, archivo.getImagenRobotX1(), sizeBoton);
+                    colocarImagen(botonEnemigo, archivo.getImagenRobotX1());
                 else if (enemigo instanceof RobotX2)
-                    colocarImagen(botonEnemigo, archivo.getImagenRobotX2(), sizeBoton);
+                    colocarImagen(botonEnemigo, archivo.getImagenRobotX2());
                 else
-                    colocarImagen(botonEnemigo, archivo.getImagenExplosion(), sizeBoton);
+                    colocarImagen(botonEnemigo, archivo.getImagenExplosion());
             }
         }
     }

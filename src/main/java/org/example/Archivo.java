@@ -69,4 +69,12 @@ public class Archivo {
     public String getImagenExplosion() {
         return "Explosion.png";
     }
+
+    public String getEstiloSliderSelec() { return "-fx-opacity: 0.1"; }
+
+    public String getEstiloDeBotonSelec() { return "-fx-font-family: Arial; -fx-font-weight: 900; -fx-text-fill: #aaccffff; -fx-font-size: 20; -fx-background-color: #0044aaff;  -fx-background-radius: 20;";
+    }
+
+    public String getEstiloCasillaSelec() {  return "-fx-cursor: pointer; -fx-background-color: #0044aaff;  -fx-background-radius: ";
+    }
 }
