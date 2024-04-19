@@ -14,8 +14,6 @@ public abstract class Personaje {
 
     public abstract void mover(Coordenadas coordenadasJugador, LinkedList<?> aux);
 
-    //public abstract void isEliminado(LinkedList<Enemigo> enemigos);
-
     public void setEliminado(boolean eliminado) {
         this.eliminado = eliminado;
     }

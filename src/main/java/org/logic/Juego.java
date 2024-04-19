@@ -73,10 +73,10 @@ public class Juego {
 
     public void agregarRobots() {
         for (int i = 0; i < CANTIDAD_ROBOTX1_INICIAL * nivelActual; i++)
-            robots.add(new RobotX1(mapa.generarCoordenada(robots)));
+            robots.add(new RobotX1(mapa.generarCoordenada(robots, jugador)));
 
         for (int i = 0; i < CANTIDAD_ROBOTX2_INICIAL * nivelActual; i++)
-            robots.add(new RobotX2(mapa.generarCoordenada(robots)));
+            robots.add(new RobotX2(mapa.generarCoordenada(robots, jugador)));
     }
 
     public void moverJugador(Coordenadas coordenadas) {
@@ -85,17 +85,27 @@ public class Juego {
     }
 
     public void teleportJugador(Coordenadas coordenadas) {
+        boolean teleportRealizado;
         if (coordenadas != null)
-            jugador.teleportSeguro(coordenadas);
+            teleportRealizado = jugador.teleportSeguro(coordenadas);
         else
-            jugador.teleportAleatorio(mapa.generarCoordenada(null));
+            teleportRealizado = jugador.teleportAleatorio(mapa.generarCoordenada(null,null));
 
-        moverEnemigos();
+        if (teleportRealizado)
+            moverEnemigos();
     }
 
     public void estadoJuego() {
         if (robots.isEmpty() && !jugador.getEliminado())
             avanzarNivel();
+    }
+
+    public int getNivel() {
+        return nivelActual;
+    }
+
+    public int getTeleportsDisponibles() {
+        return jugador.getTeleportsSeguros();
     }
 
     public boolean getJugadorEliminado() {

@@ -1,7 +1,6 @@
 package org.logic.personajes;
 
 import org.logic.Coordenadas;
-
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -26,15 +25,5 @@ public abstract class Enemigo extends Personaje {
                 }
             }
         }
-        /*
-        for (Enemigo enemigo : enemigos) {
-            if (!this.equals(enemigo) && !this.getEliminado()) {
-                if (this.getCoordenadas().esIgual(enemigo.getCoordenadas())) {
-                    this.setEliminado(true);
-                    enemigo.setEliminado(true);
-                }
-            }
-        }
-        */
     }
 }

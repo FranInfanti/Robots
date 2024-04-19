@@ -19,26 +19,18 @@ public class Jugador extends Personaje {
         setCoordenadas(new Coordenadas(x,y));
     }
 
-    /*
-    @Override
-    public void isEliminado(LinkedList<Enemigo> enemigos) {
-        for (Enemigo enemigo : enemigos) {
-            if (getCoordenadas().esIgual(enemigo.getCoordenadas()))
-                setEliminado(true);
-        }
-    }
-    */
-
-    public void teleportSeguro(Coordenadas coordenadas) {
+    public boolean teleportSeguro(Coordenadas coordenadas) {
         if (teleportsSeguros == 0)
-            return;
+            return false;
 
         setCoordenadas(coordenadas);
         teleportsSeguros--;
+        return true;
     }
 
-    public void teleportAleatorio(Coordenadas coordenadas) {
+    public boolean teleportAleatorio(Coordenadas coordenadas) {
         setCoordenadas(coordenadas);
+        return true;
     }
 
     public void setTeleportsSeguros(int teleportsSeguros) {
