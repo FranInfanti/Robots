@@ -10,15 +10,18 @@ public class Mapa {
         if (enemigos == null || jugador == null)
             return false;
 
+        if (coordenada.esIgual(jugador.getCoordenadas()))
+            return true;
+
         boolean ocupada = false;
         for (Enemigo enemigo : enemigos) {
-            if (coordenada.esIgual(enemigo.getCoordenadas()) || coordenada.esIgual(jugador.getCoordenadas()))
+            if (coordenada.esIgual(enemigo.getCoordenadas()))
                 ocupada = true;
         }
         return ocupada;
     }
 
-    private Coordenadas dimensionMapa;
+    private final Coordenadas dimensionMapa;
     private final Random rand;
 
     public Mapa(Coordenadas dimensionMapa) {
@@ -33,10 +36,6 @@ public class Mapa {
             aleatorias.setY(rand.nextInt(dimensionMapa.getY()));
         } while (coordenadaOcupada(aleatorias, enemigos, jugador));
         return aleatorias;
-    }
-
-    public void setDimensionMapa(Coordenadas dimensionMapa) {
-        this.dimensionMapa = dimensionMapa;
     }
 
     public Coordenadas getCentroMapa() {
