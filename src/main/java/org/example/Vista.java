@@ -53,6 +53,7 @@ public class Vista {
             else
                 juego.estadoJuego();
 
+            puntajeJuego.setText(archivo.getTextoPuntos(juego.getPuntos()));
             teleportSeguro.setText(archivo.getTextoDeTeleportSafely(juego.getTeleportsDisponibles()));
             juego.borrar();
             event.consume();
@@ -181,8 +182,10 @@ public class Vista {
         layoutJuego.setStyle(archivo.getEstiloDeVbox());
         layoutJuego.getChildren().addAll(layoutArriba, layoutGrilla, layoutAbajo);
 
-        layoutArriba.getChildren().addAll(tituloJuego, nuevoJuego);
+        layoutArriba.getChildren().addAll(tituloJuego, nuevoJuego, puntajeJuego);
         layoutArriba.setStyle(archivo.getEstiloDeVbox());
+
+        puntajeJuego.setStyle(archivo.getEstiloDeTitulo());
 
         tituloJuego.setStyle(archivo.getEstiloDeTitulo());
         inicioJuego.setStyle(archivo.getEstiloDeBoton());
@@ -226,6 +229,7 @@ public class Vista {
     private final HBox layoutAbajo;
 
     private final Label tituloJuego;
+    private final Label puntajeJuego;
     private final Button teleportRandom;
     private final Button teleportSeguro;
     private final Button waitForRobots;
@@ -254,6 +258,7 @@ public class Vista {
         cantidadFilas = new Slider(MIN_FIL,MAX_FIL,MIN_FIL);
         cantidadColumnas = new Slider(MIN_COL,MAX_COL,MIN_COL);
 
+        puntajeJuego = new Label();
         tituloJuego = new Label(archivo.getTextoDeTituloJuego());
         teleportRandom = new Button(archivo.getTextoDeTeleportRandom());
         teleportSeguro = new Button();

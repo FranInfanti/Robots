@@ -22,6 +22,10 @@ public class Archivo {
                 " (Remaining: %d)" .formatted(teleportsDisponibles);
     }
 
+    public String getTextoPuntos(int puntos) {
+        return "Puntos: %d" .formatted(puntos);
+    }
+
     public String getTextoDeWaitForRobots() {
         return "Wait for robots";
     }

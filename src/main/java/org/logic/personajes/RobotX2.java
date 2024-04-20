@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 public class RobotX2 extends Enemigo {
     private static final int DEZSPLAZAMIENTO = 2;
+    private static final int PUNTAJE_X2 = 20;
 
     public RobotX2(Coordenadas coordenadas) {
         super(coordenadas);
@@ -23,4 +24,10 @@ public class RobotX2 extends Enemigo {
             this.isEliminado((LinkedList<Enemigo>) aux);
         }
     }
+
+    @Override
+    public int getPuntos() {
+        return PUNTAJE_X2;
+    };
 }
+

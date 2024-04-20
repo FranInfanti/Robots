@@ -38,7 +38,14 @@ public class Juego {
     }
 
     private void eliminarRobots() {
-        robots.removeIf(Personaje::getEliminado);
+        Iterator<Enemigo> iterator = robots.iterator();
+        while (iterator.hasNext()) {
+            Enemigo robot = iterator.next();
+            if (robot.getEliminado()) {
+                sistemaPuntaje.sumarPuntos(robot.getPuntos());
+                iterator.remove();
+            }
+        }
     }
 
     private void moverEnemigos() {
@@ -48,8 +55,9 @@ public class Juego {
 
         for (Enemigo actual : robots) {
             actual.mover(jugador.getCoordenadas(), enemigos);
-            if (actual.getEliminado())
+            if (actual.getEliminado()) {
                 agregarExplosion(actual.getCoordenadas());
+            }
         }
 
         jugadorEliminado(enemigos);
@@ -57,6 +65,7 @@ public class Juego {
     }
 
     private int nivelActual;
+    private final SistemaPuntaje sistemaPuntaje;
     private final Mapa mapa;
 
     public final Jugador jugador;
@@ -65,6 +74,7 @@ public class Juego {
 
     public Juego(Coordenadas dimensionesMapa) {
         nivelActual = 1;
+        sistemaPuntaje = new SistemaPuntaje();
         mapa = new Mapa(dimensionesMapa);
         jugador = new Jugador(mapa.getCentroMapa(), TELEPORTS_SEGUROS_DISPONIBLES);
         robots = new LinkedList<>();
@@ -102,6 +112,10 @@ public class Juego {
 
     public int getNivel() {
         return nivelActual;
+    }
+
+    public int getPuntos(){
+        return sistemaPuntaje.getPuntos();
     }
 
     public int getTeleportsDisponibles() {

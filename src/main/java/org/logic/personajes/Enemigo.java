@@ -11,6 +11,8 @@ public abstract class Enemigo extends Personaje {
 
     public abstract void mover(Coordenadas coordenadasJugador, LinkedList<?> aux);
 
+    public abstract int getPuntos();
+
     public void isEliminado(LinkedList<Enemigo> enemigos) {
         boolean sigo = true;
         Iterator<Enemigo> iterator = enemigos.iterator();

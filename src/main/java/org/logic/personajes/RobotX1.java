@@ -8,6 +8,8 @@ public class RobotX1 extends Enemigo {
         super(coordenadas);
     }
 
+    private static final int PUNTAJE_X1 = 10;
+
     @Override
     public void mover(Coordenadas coordenadasJugador, LinkedList<?> aux) {
         if (this.getEliminado())
@@ -19,4 +21,9 @@ public class RobotX1 extends Enemigo {
         setCoordenadas(new Coordenadas(x,y));
         this.isEliminado((LinkedList<Enemigo>) aux);
     }
+
+    @Override
+    public int getPuntos() {
+        return PUNTAJE_X1;
+    };
 }

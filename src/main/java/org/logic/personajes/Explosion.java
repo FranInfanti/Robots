@@ -11,4 +11,9 @@ public class Explosion extends Enemigo {
     @Override
     public void mover(Coordenadas coordenadasJugador, LinkedList<?> aux) {
     }
+
+    @Override
+    public int getPuntos() {
+        return 0;
+    }
 }
