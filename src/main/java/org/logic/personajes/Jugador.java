@@ -1,18 +1,18 @@
 package org.logic.personajes;
 
 import org.logic.Coordenadas;
-import java.util.LinkedList;
+import java.util.Collection;
 
 public class Jugador extends Personaje {
-    private int teleportsSeguros;
+    private int teleportSeguros;
 
     public Jugador(Coordenadas coordenadas, int teleportsDisponibles) {
         super(coordenadas);
-        this.teleportsSeguros = teleportsDisponibles;
+        this.teleportSeguros = teleportsDisponibles;
     }
 
     @Override
-    public void mover(Coordenadas coordenadas, LinkedList<?> aux) {
+    public void mover(Coordenadas coordenadas, Collection<?> aux) {
         Coordenadas distanciaMover = getCoordenadas().calcularDesplazamiento(coordenadas);
         int x = distanciaMover.getX() + getCoordenadas().getX();
         int y = distanciaMover.getY() + getCoordenadas().getY();
@@ -20,11 +20,11 @@ public class Jugador extends Personaje {
     }
 
     public boolean teleportSeguro(Coordenadas coordenadas) {
-        if (teleportsSeguros == 0)
+        if (teleportSeguros == 0)
             return false;
 
         setCoordenadas(coordenadas);
-        teleportsSeguros--;
+        teleportSeguros--;
         return true;
     }
 
@@ -33,11 +33,11 @@ public class Jugador extends Personaje {
         return true;
     }
 
-    public void setTeleportsSeguros(int teleportsSeguros) {
-        this.teleportsSeguros = teleportsSeguros;
+    public void setTeleportsSeguros(int teleportSeguros) {
+        this.teleportSeguros = teleportSeguros;
     }
 
     public int getTeleportsSeguros() {
-        return teleportsSeguros;
+        return teleportSeguros;
     }
 }

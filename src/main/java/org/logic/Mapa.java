@@ -2,11 +2,16 @@ package org.logic;
 
 import org.logic.personajes.Enemigo;
 import org.logic.personajes.Jugador;
+
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Random;
 
 public class Mapa {
-    private boolean coordenadaOcupada(Coordenadas coordenada, LinkedList<Enemigo> enemigos, Jugador jugador) {
+    private static final int MITAD = 2;
+
+    private boolean coordenadaOcupada(Coordenadas coordenada, HashSet<Enemigo> enemigos, Jugador jugador) {
         if (enemigos == null || jugador == null)
             return false;
 
@@ -29,17 +34,17 @@ public class Mapa {
         rand = new Random();
     }
 
-    public Coordenadas generarCoordenada(LinkedList<Enemigo> enemigos, Jugador jugador) {
+    public Coordenadas generarCoordenada(Collection<?> aux, Jugador jugador) {
         Coordenadas aleatorias = new Coordenadas(0,0);
         do {
             aleatorias.setX(rand.nextInt(dimensionMapa.getX()));
             aleatorias.setY(rand.nextInt(dimensionMapa.getY()));
-        } while (coordenadaOcupada(aleatorias, enemigos, jugador));
+        } while (coordenadaOcupada(aleatorias, (HashSet<Enemigo>) aux, jugador));
         return aleatorias;
     }
 
     public Coordenadas getCentroMapa() {
-        return new Coordenadas(dimensionMapa.getX() / 2, dimensionMapa.getY() / 2);
+        return new Coordenadas(dimensionMapa.getX() / MITAD, dimensionMapa.getY() / MITAD);
     }
 
     public Coordenadas getDimensionMapa() {

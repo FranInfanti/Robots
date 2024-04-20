@@ -7,7 +7,8 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
         Vista vista = new Vista(stage);
-        vista.iniciar();
+        Controlador controlador = new Controlador(vista);
+        controlador.iniciar();
     }
 
     public static void main(String[] args) {
