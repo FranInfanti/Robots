@@ -18,16 +18,16 @@ public class Vista {
     private static final int ANCHO_SCENE = 650;
     private static final int ALTO_GRILLA = 400;
     private static final int ANCHO_GRILLA = 400;
-    private static final int MIN_FIL = 10;
-    private static final int MAX_FIL = 30;
-    private static final int MIN_COL = 10;
-    private static final int MAX_COL = 30;
+    private static final int MIN_FILA = 10;
+    private static final int MAX_FILA = 30;
+    private static final int MIN_COLUMNA = 10;
+    private static final int MAX_COLUMNA = 30;
 
     private void setLayoutInicio() {
         cantidadColumnas.setStyle(archivo.getCssSlider(false));
         cantidadFilas.setStyle(archivo.getCssSlider(false));
         inicioJuego.setStyle(archivo.getCssDeBoton(false));
-        layoutInicio.setStyle(archivo.getCssDeVbox());
+        layoutInicio.setStyle(archivo.getCssDeVbox(true));
         layoutInicio.getChildren().addAll(tituloJuego, cantidadFilas, cantidadColumnas, inicioJuego);
     }
 
@@ -39,7 +39,7 @@ public class Vista {
     private void setLayoutArriba() {
         tituloJuego.setStyle(archivo.getCssDeTitulo());
         nuevoJuego.setStyle(archivo.getCssDeBoton(false));
-        layoutArriba.setStyle(archivo.getCssDeVbox());
+        layoutArriba.setStyle(archivo.getCssDeVbox(true));
         layoutArriba.getChildren().addAll(tituloJuego, nuevoJuego);
     }
 
@@ -58,12 +58,12 @@ public class Vista {
         boton.setOnAction(_ -> {
             int x = GridPane.getColumnIndex(boton);
             int y = GridPane.getRowIndex(boton);
-            if (telePortActivado) {
-                telePortActivado = false;
+            if (teleportActivado) {
+                teleportActivado = false;
                 juego.teleportJugador(new Coordenadas(x,y));
             } else if (!juego.getJugadorEliminado())
                 juego.moverJugador(new Coordenadas(x, y));
-            pantalla.mostrar(juego, layoutGrilla, eventoDeFin, telePortActivado);
+            pantalla.mostrar(juego, layoutGrilla, eventoDeFin, teleportActivado);
         });
     }
 
@@ -74,15 +74,12 @@ public class Vista {
     }
 
     private void setEstiloNodo(Node nodo) {
-        boolean esSlider = nodo instanceof Slider;
-        nodo.setStyle(esSlider ? archivo.getCssSlider(true) : archivo.getCssDeBoton(false));
-        if (nodo.isFocused())
-            nodo.setStyle(esSlider ? archivo.getCssSlider(true) : archivo.getCssDeBoton(true));
+        nodo.setStyle(nodo instanceof Slider ? archivo.getCssSlider(nodo.isFocused()) : archivo.getCssDeBoton(nodo.isFocused()));
     }
 
     private final Pantalla pantalla;
     private final Archivo archivo;
-    private boolean telePortActivado;
+    private boolean teleportActivado;
 
     private Juego juego;
     private final EventoDeInicio eventoDeInicio;
@@ -108,7 +105,7 @@ public class Vista {
         eventoDeInicio = new EventoDeInicio();
         eventoDeFin = new EventoDeFin();
 
-        telePortActivado = false;
+        teleportActivado = false;
         pantalla = new Pantalla();
         archivo = new Archivo();
 
@@ -121,8 +118,8 @@ public class Vista {
 
         inicioJuego = new Button(archivo.getTextoDeInicioJuego());
         nuevoJuego = new Button(archivo.getTextoDeNuevoJuego());
-        cantidadFilas = new Slider(MIN_FIL, MAX_FIL, MIN_FIL);
-        cantidadColumnas = new Slider(MIN_COL, MAX_COL, MIN_COL);
+        cantidadFilas = new Slider(MIN_FILA, MAX_FILA, MIN_FILA);
+        cantidadColumnas = new Slider(MIN_COLUMNA, MAX_COLUMNA, MIN_COLUMNA);
 
         tituloJuego = new Label(archivo.getTextoDeTituloJuego());
         teleportRandom = new Button(archivo.getTextoDeTeleportRandom());
@@ -147,23 +144,19 @@ public class Vista {
     }
 
     public void mostrarPantalla() {
-        pantalla.mostrar(juego, layoutGrilla, eventoDeFin, telePortActivado);
+        pantalla.mostrar(juego, layoutGrilla, eventoDeFin, teleportActivado);
     }
 
-    public void actualizarEstilosNodos() {
-        setEstiloNodo(teleportRandom);
-        setEstiloNodo(teleportSeguro);
-        setEstiloNodo(waitForRobots);
-        setEstiloNodo(inicioJuego);
+    public void actualizarEstiloNodos() {
         setEstiloNodo(nuevoJuego);
-        setEstiloNodo(cantidadColumnas);
-        setEstiloNodo(cantidadFilas);
 
-        if (cantidadColumnas.isFocused())
-            cantidadColumnas.setStyle(archivo.getCssSlider(true));
+        for (Node nodo : layoutInicio.getChildren()) {
+            if (!(nodo instanceof Label))
+                setEstiloNodo(nodo);
+        }
 
-        if (cantidadFilas.isFocused())
-            cantidadFilas.setStyle(archivo.getCssSlider(true));
+        for (Node nodo : layoutAbajo.getChildren())
+            setEstiloNodo(nodo);
 
         for (Node nodo : layoutGrilla.getChildren()) {
             Button boton = (Button) nodo;
@@ -175,7 +168,7 @@ public class Vista {
 
     public void setMenuInicio(boolean activado) {
         layoutInicio.setDisable(!activado);
-        layoutInicio.setOpacity(activado ? 1 : 0);
+        layoutInicio.setStyle(archivo.getCssDeVbox(activado));
         layoutJuego.setDisable(activado);
     }
 
@@ -201,12 +194,12 @@ public class Vista {
         teleportSeguro.setText(archivo.getTextoDeTeleportSafely(cantidad));
     }
 
-    public void setTelePortActivado(boolean telePortActivado) {
-        this.telePortActivado = telePortActivado;
+    public void setTeleportActivado(boolean teleportActivado) {
+        this.teleportActivado = teleportActivado;
     }
 
-    public boolean getTelePortActivado() {
-        return telePortActivado;
+    public boolean getTeleportActivado() {
+        return teleportActivado;
     }
 
     public int getCantidadColumnas() {

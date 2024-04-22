@@ -14,6 +14,8 @@ public abstract class Personaje {
 
     public abstract void mover(Coordenadas coordenadasJugador, Collection<?> aux);
 
+    public abstract String getImagen();
+
     public void setEliminado(boolean eliminado) {
         this.eliminado = eliminado;
     }

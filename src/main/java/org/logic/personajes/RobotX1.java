@@ -8,6 +8,7 @@ import java.util.LinkedList;
 
 public class RobotX1 extends Enemigo {
     private static final int PUNTAJE = 10;
+    private static final String IMAGEN = "robotX1.png";
 
     public RobotX1(Coordenadas coordenadas) {
         super(coordenadas);
@@ -28,5 +29,10 @@ public class RobotX1 extends Enemigo {
     @Override
     public int getPuntaje() {
         return PUNTAJE;
+    }
+
+    @Override
+    public String getImagen() {
+        return IMAGEN;
     }
 }

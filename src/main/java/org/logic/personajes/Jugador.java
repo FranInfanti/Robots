@@ -4,6 +4,8 @@ import org.logic.Coordenadas;
 import java.util.Collection;
 
 public class Jugador extends Personaje {
+    private static final String IMAGEN = "jugador.png";
+
     private int teleportSeguros;
 
     public Jugador(Coordenadas coordenadas, int teleportsDisponibles) {
@@ -17,6 +19,11 @@ public class Jugador extends Personaje {
         int x = distanciaMover.getX() + getCoordenadas().getX();
         int y = distanciaMover.getY() + getCoordenadas().getY();
         setCoordenadas(new Coordenadas(x,y));
+    }
+
+    @Override
+    public String getImagen() {
+        return IMAGEN;
     }
 
     public boolean teleportSeguro(Coordenadas coordenadas) {

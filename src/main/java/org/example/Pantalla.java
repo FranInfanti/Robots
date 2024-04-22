@@ -11,12 +11,21 @@ import org.logic.Juego;
 import org.logic.personajes.*;
 
 public class Pantalla {
-    private void setEstiloCasilla(GridPane layoutJuego, Coordenadas posicionJugador, boolean telePortActivado) {
+    private static final int DISTANCIA_MINIMA = 1;
+
+    private boolean esDistanciaMinima(Coordenadas jugador, Button boton) {
+        int x = Math.abs(jugador.getX() - GridPane.getColumnIndex(boton));
+        int y = Math.abs(jugador.getY() - GridPane.getRowIndex(boton));
+
+        return x < DISTANCIA_MINIMA && y < DISTANCIA_MINIMA;
+    }
+
+    private void setEstiloCasilla(GridPane layoutJuego, Coordenadas jugador, boolean teleportActivado) {
         for (Node nodo : layoutJuego.getChildren()) {
             Button boton = (Button) nodo;
             boton.setStyle(archivo.getCssCasilla(false) + boton.getMaxWidth() / 5);
             boton.setGraphic(null);
-            if ((Math.abs(posicionJugador.getX() - GridPane.getColumnIndex(boton)) <= 1 &&  Math.abs(posicionJugador.getY() - GridPane.getRowIndex(boton)) <= 1) || telePortActivado)
+            if (esDistanciaMinima(jugador, boton) || teleportActivado)
                 boton.setDisable(false);
         }
     }
@@ -43,8 +52,8 @@ public class Pantalla {
         archivo = new Archivo();
     }
 
-    public void mostrar(Juego juego, GridPane layoutJuego, EventoDeFin eventoDeFin, boolean telePortActivado) {
-        setEstiloCasilla(layoutJuego, juego.getCoordenadasJugador(), telePortActivado);
+    public void mostrar(Juego juego, GridPane layoutJuego, EventoDeFin eventoDeFin, boolean teleportActivado) {
+        setEstiloCasilla(layoutJuego, juego.getCoordenadasJugador(), teleportActivado);
         layoutJuego.fireEvent(eventoDeFin);
 
         Button boton = getBotonPorPosicion(juego.getCoordenadasJugador(), layoutJuego);
@@ -52,16 +61,8 @@ public class Pantalla {
 
         for (int i = 0; i < juego.getCantidadEnemigos(); i++) {
             Enemigo enemigo = juego.getEnemigo(i);
-            if (enemigo != null) {
-                Button botonEnemigo = getBotonPorPosicion(enemigo.getCoordenadas(), layoutJuego);
-
-                if (enemigo instanceof RobotX1)
-                    colocarImagen(botonEnemigo, archivo.getImagenRobotX1());
-                else if (enemigo instanceof RobotX2)
-                    colocarImagen(botonEnemigo, archivo.getImagenRobotX2());
-                else
-                    colocarImagen(botonEnemigo, archivo.getImagenExplosion());
-            }
+            if (enemigo != null)
+                colocarImagen(getBotonPorPosicion(enemigo.getCoordenadas(), layoutJuego), enemigo.getImagen());
         }
     }
 }

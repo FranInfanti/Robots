@@ -18,8 +18,7 @@ public class Archivo {
     }
 
     public String getTextoDeTeleportSafely(int teleportsDisponibles) {
-        return "Teleport Safely\n" +
-                " (Remaining: %d)" .formatted(teleportsDisponibles);
+        return "Teleport Safely\n  (Remaining: %d)" .formatted(teleportsDisponibles);
     }
 
     public String getTextoDeWaitForRobots() {
@@ -31,8 +30,7 @@ public class Archivo {
     }
 
     public String getTextoResultado(int nivel, int puntos) {
-        return ("Llegaste al Nivel %d \n" +
-                "Tu puntaje fue de %d") .formatted(nivel, puntos);
+        return ("Llegaste al Nivel %d\n Tu puntaje fue de %d") .formatted(nivel, puntos);
     }
 
     public String getCssDeTitulo() {
@@ -58,8 +56,9 @@ public class Archivo {
         return "-fx-alignment: CENTER; -fx-background-color: #002255ff";
     }
 
-    public String getCssDeVbox() {
-        return "-fx-alignment: CENTER; -fx-background-color: #002255ff; -fx-spacing: 20";
+    public String getCssDeVbox(boolean seleccionado) {
+        int opacidad = seleccionado ? 1 : 0;
+        return "-fx-alignment: CENTER; -fx-background-color: #002255ff; -fx-spacing: 20; -fx-opacity: %d" .formatted(opacidad);
     }
 
     public String getCssDeVboxJuego() {
@@ -83,6 +82,6 @@ public class Archivo {
     }
 
     public String getImagenExplosion() {
-        return "Explosion.png";
+        return "explosion.png";
     }
 }
