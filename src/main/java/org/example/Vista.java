@@ -24,11 +24,14 @@ public class Vista {
     private static final int MAX_COLUMNA = 30;
 
     private void setLayoutInicio() {
-        cantidadColumnas.setStyle(archivo.getCssSlider(false));
+        tituloJuego.setStyle(archivo.getCssDeTitulo());
+        textoFilas.setStyle(archivo.getCssTextos());
         cantidadFilas.setStyle(archivo.getCssSlider(false));
+        textoColumnas.setStyle(archivo.getCssTextos());
+        cantidadColumnas.setStyle(archivo.getCssSlider(false));
         inicioJuego.setStyle(archivo.getCssDeBoton(false));
         layoutInicio.setStyle(archivo.getCssDeVbox(true));
-        layoutInicio.getChildren().addAll(tituloJuego, cantidadFilas, cantidadColumnas, inicioJuego);
+        layoutInicio.getChildren().addAll(tituloJuego,textoFilas, cantidadFilas,textoColumnas, cantidadColumnas, inicioJuego);
     }
 
     private void setLayoutJuego() {
@@ -37,10 +40,10 @@ public class Vista {
     }
 
     private void setLayoutArriba() {
-        tituloJuego.setStyle(archivo.getCssDeTitulo());
         nuevoJuego.setStyle(archivo.getCssDeBoton(false));
+        textoComoJugar.setStyle(archivo.getCssTextos());
         layoutArriba.setStyle(archivo.getCssDeVbox(true));
-        layoutArriba.getChildren().addAll(tituloJuego, nuevoJuego);
+        layoutArriba.getChildren().addAll(nuevoJuego, textoComoJugar);
     }
 
     private void setGrilla() {
@@ -48,8 +51,8 @@ public class Vista {
     }
 
     private void setLayoutAbajo() {
-        layoutAbajo.getChildren().addAll(teleportRandom, teleportSeguro, waitForRobots);
         layoutAbajo.setStyle(archivo.getCssDeHbox());
+        layoutAbajo.getChildren().addAll(teleportRandom, teleportSeguro, waitForRobots);
         for (Node nodo : layoutAbajo.getChildren())
             nodo.setStyle(archivo.getCssDeBoton(false));
     }
@@ -98,8 +101,12 @@ public class Vista {
     private final Button waitForRobots;
     private final Button inicioJuego;
     private final Button nuevoJuego;
+
     private final Slider cantidadColumnas;
     private final Slider cantidadFilas;
+    private final Label textoFilas;
+    private final Label textoColumnas;
+    private final Label textoComoJugar;
 
     public Vista(Stage stage) {
         eventoDeInicio = new EventoDeInicio();
@@ -120,6 +127,13 @@ public class Vista {
         nuevoJuego = new Button(archivo.getTextoDeNuevoJuego());
         cantidadFilas = new Slider(MIN_FILA, MAX_FILA, MIN_FILA);
         cantidadColumnas = new Slider(MIN_COLUMNA, MAX_COLUMNA, MIN_COLUMNA);
+        cantidadFilas.setBlockIncrement(5);
+        cantidadColumnas.setBlockIncrement(5);
+
+
+        textoFilas = new Label(archivo.getTextoCantFilas());
+        textoColumnas = new Label(archivo.getTextoCantColumnas());
+        textoComoJugar =  new Label(archivo.getTextoComoJugar());
 
         tituloJuego = new Label(archivo.getTextoDeTituloJuego());
         teleportRandom = new Button(archivo.getTextoDeTeleportRandom());
@@ -160,9 +174,9 @@ public class Vista {
 
         for (Node nodo : layoutGrilla.getChildren()) {
             Button boton = (Button) nodo;
-            boton.setStyle(archivo.getCssCasilla(false) + boton.getWidth() / 5);
+            boton.setStyle(archivo.getCssCasilla(false));
             if (boton.isFocused())
-                boton.setStyle(archivo.getCssCasilla(true) + boton.getWidth() / 5);
+                boton.setStyle(archivo.getCssCasilla(true));
         }
     }
 
