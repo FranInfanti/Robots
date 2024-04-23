@@ -17,6 +17,18 @@ public class Archivo {
         return "Teleport Random";
     }
 
+    public String getTextoComoJugar() {
+        return "Seleccione la casilla donde quiera ir, clic con el MOUSE o moviendo con las teclas y presionando ENTER";
+    }
+
+    public String getTextoCantFilas() {
+        return "Cantidad de Filas \n10          15          20          25          30";
+    }
+
+    public String getTextoCantColumnas() {
+        return "Cantidad de Columnas \n10          15          20          25          30";
+    }
+
     public String getTextoDeTeleportSafely(int teleportsDisponibles) {
         return "Teleport Safely\n  (Remaining: %d)" .formatted(teleportsDisponibles);
     }
@@ -38,7 +50,11 @@ public class Archivo {
     }
 
     public String getCssDeTitulo() {
-        return "-fx-font-family: Arial; -fx-font-weight: 900; -fx-font-size: 30; -fx-text-fill: #aaccffff";
+        return "-fx-font-family: Arial; -fx-font-weight: 900; -fx-font-size: 50; -fx-text-fill: #aaccffff";
+    }
+
+    public String getCssTextos() {
+        return "-fx-font-family: Arial; -fx-font-weight: 900; -fx-font-size: 12; -fx-text-fill: #aaccffff; -fx-text-alignment: center";
     }
 
     public String getCssDeBoton(boolean seleccionado) {
@@ -47,22 +63,22 @@ public class Archivo {
     }
 
     public String getCssSlider(boolean seleccionado) {
-        double opacidad = seleccionado ? 0.1f : 0.2f;
-        return "-fx-opacity: %f; -fx-max-width: 200" .formatted(opacidad);
+        String opacidad = seleccionado ? "0.1" : "0.2";
+        return "-fx-opacity: %s; -fx-max-width: 200" .formatted(opacidad);
     }
 
     public String getCssCasilla(boolean seleccionado) {
         String color = seleccionado ? "#0044aaff" : "#003380ff";
-        return "-fx-cursor: pointer; -fx-background-color: %s; -fx-background-radius: " .formatted(color);
+        return "-fx-background-color: "+ color +"; -fx-background-radius: 20%";
     }
 
     public String getCssDeHbox() {
         return "-fx-alignment: CENTER; -fx-background-color: #002255ff";
     }
 
-    public String getCssDeVbox(boolean seleccionado) {
-        int opacidad = seleccionado ? 1 : 0;
-        return "-fx-alignment: CENTER; -fx-background-color: #002255ff; -fx-spacing: 20; -fx-opacity: %d" .formatted(opacidad);
+    public String getCssDeVbox(boolean activado) {
+        int opacidad = activado ? 1 : 0;
+        return "-fx-alignment: CENTER; -fx-background-color: #002255ff; -fx-spacing: 10; -fx-opacity: %d" .formatted(opacidad);
     }
 
     public String getCssDeVboxJuego() {
