@@ -1,7 +1,10 @@
 package org.example;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import org.example.eventos.*;
 import javafx.scene.Node;
@@ -11,101 +14,56 @@ import org.logic.Coordenadas;
 import org.logic.Juego;
 
 public class Vista {
-    private static final int ALTURA_SCENE = 600;
-    private static final int ANCHO_SCENE = 600;
-    private static final int ALTURA_JUEGO = 400;
-    private static final int ANCHO_JUEGO = 600;
+    private static final int ALTURA_SCENE = 650;
+    private static final int ANCHO_SCENE = 650;
     private static final int ALTO_GRILLA = 400;
     private static final int ANCHO_GRILLA = 400;
-    private static final int ALTO_BOTON = 65;
-    private static final int ANCHO_BOTON = 200;
-    private static final int MIN_FIL = 10;
-    private static final int MAX_FIL = 30;
-    private static final int MIN_COL = 10;
-    private static final int MAX_COL = 30;
+    private static final int MIN_FILA = 10;
+    private static final int MAX_FILA = 30;
+    private static final int MIN_COLUMNA = 10;
+    private static final int MAX_COLUMNA = 30;
 
-
-    private void fireAlerta() {
-        Alert alerta = new Alert(Alert.AlertType.NONE);
-        alerta.setTitle(archivo.getTextoDeTituloJuego());
-        alerta.setContentText("Llegaste al Nivel %d" .formatted(juego.getNivel()));
-        alerta.setHeaderText("Gracias Por Jugar :)");
-        alerta.show();
+    private void setLayoutInicio() {
+        cantidadColumnas.setStyle(archivo.getCssSlider(false));
+        cantidadFilas.setStyle(archivo.getCssSlider(false));
+        inicioJuego.setStyle(archivo.getCssDeBoton(false));
+        layoutInicio.setStyle(archivo.getCssDeVbox(true));
+        layoutInicio.getChildren().addAll(tituloJuego, cantidadFilas, cantidadColumnas, inicioJuego);
     }
 
-    private void setListenerEventoInicio() {
-        layoutGeneral.addEventHandler(EventoDeInicio.INICIO_DE_JUEGO_EVENT_TYPE, event -> {
-            layoutInicio.setDisable(false);
-            layoutInicio.setOpacity(1);
-            layoutJuego.setDisable(true);
-            actualizarEstilos();
-            event.consume();
-        });
+    private void setLayoutJuego() {
+        layoutJuego.setStyle(archivo.getCssDeVboxJuego());
+        layoutJuego.getChildren().addAll(layoutArriba, layoutGrilla, layoutAbajo);
     }
 
-    private void setListenerEventoFin() {
-        layoutGrilla.addEventHandler(EventoDeFin.FIN_DE_JUEGO_EVENT_TYPE, event -> {
-            if (juego.getJugadorEliminado()) {
-                System.out.println("Nivel: %d" .formatted(juego.getNivel()));
-                juego.borrar();
-                layoutGeneral.fireEvent(eventoDeInicio);
-            }
-            else
-                juego.estadoJuego();
-
-            puntajeJuego.setText(archivo.getTextoPuntos(juego.getPuntos()));
-            teleportSeguro.setText(archivo.getTextoDeTeleportSafely(juego.getTeleportsDisponibles()));
-            juego.borrar();
-            event.consume();
-        });
+    private void setLayoutArriba() {
+        tituloJuego.setStyle(archivo.getCssDeTitulo());
+        nuevoJuego.setStyle(archivo.getCssDeBoton(false));
+        layoutArriba.setStyle(archivo.getCssDeVbox(true));
+        layoutArriba.getChildren().addAll(tituloJuego, nuevoJuego);
     }
 
-    private void setListenersBotones() {
-        nuevoJuego.setOnAction(_ -> layoutGeneral.fireEvent(eventoDeInicio));
+    private void setGrilla() {
+        layoutGrilla.setStyle(archivo.getCssDeGridPane(ANCHO_GRILLA, ALTO_GRILLA));
+    }
 
-        inicioJuego.setOnAction(_ -> {
-            layoutInicio.setDisable(true);
-            layoutInicio.setOpacity(0);
-            layoutJuego.setDisable(false);
-
-            juego = new Juego(new Coordenadas((int) cantidadColumnas.getValue(), (int) cantidadFilas.getValue()));
-            juego.agregarRobots();
-            telePortActivado = false;
-            setGrillaLayoutJuego();
-            pantalla.mostrar(juego, layoutGrilla, eventoDeFin, telePortActivado);
-        });
-
-        teleportRandom.setOnAction(_ -> {
-            if (juego.getJugadorEliminado() || telePortActivado)
-                return;
-            juego.teleportJugador(null);
-            pantalla.mostrar(juego, layoutGrilla, eventoDeFin, telePortActivado);
-        });
-
-        teleportSeguro.setOnAction(_ -> {
-            if (!juego.getJugadorEliminado())
-                telePortActivado = true;
-                pantalla.mostrar(juego, layoutGrilla, eventoDeFin, telePortActivado);
-        });
-
-        waitForRobots.setOnAction(_ -> {
-            if (juego.getJugadorEliminado() || telePortActivado)
-                return;
-            juego.moverJugador(juego.getCoordenadasJugador());
-            pantalla.mostrar(juego, layoutGrilla, eventoDeFin, telePortActivado);
-        });
+    private void setLayoutAbajo() {
+        layoutAbajo.getChildren().addAll(teleportRandom, teleportSeguro, waitForRobots);
+        layoutAbajo.setStyle(archivo.getCssDeHbox());
+        for (Node nodo : layoutAbajo.getChildren())
+            nodo.setStyle(archivo.getCssDeBoton(false));
     }
 
     private void setListenerBotonGrilla(Button boton) {
         boton.setOnAction(_ -> {
-            int x = layoutGrilla.getColumnIndex(boton);
-            int y = layoutGrilla.getRowIndex(boton);
-            if (telePortActivado) {
-                telePortActivado = false;
+            int x = GridPane.getColumnIndex(boton);
+            int y = GridPane.getRowIndex(boton);
+            if (teleportActivado) {
+                teleportActivado = false;
                 juego.teleportJugador(new Coordenadas(x,y));
             } else if (!juego.getJugadorEliminado())
                 juego.moverJugador(new Coordenadas(x, y));
-            pantalla.mostrar(juego, layoutGrilla, eventoDeFin, telePortActivado);
+            pantalla.mostrar(juego, layoutGrilla, eventoDeFin, teleportActivado);
         });
     }
 
@@ -115,107 +73,13 @@ public class Vista {
         return ALTO_GRILLA / dimensionesMapa.getY();
     }
 
-    private void setGrillaLayoutJuego() {
-        Coordenadas dimensionesMapa = juego.getDimensionesMapa();
-        int sizeBoton = getSizeBoton(dimensionesMapa);
-        layoutGrilla.getChildren().clear();
-        for (int fil = 0; fil < dimensionesMapa.getX(); fil++) {
-            for (int col = 0; col < dimensionesMapa.getY(); col++) {
-                Button boton = new Button();
-                boton.setMaxSize(sizeBoton, sizeBoton);
-                boton.setMinSize(sizeBoton, sizeBoton);
-                layoutGrilla.add(boton, fil, col);
-                setListenerBotonGrilla(boton);
-            }
-        }
-    }
-
-    private void setListenerSelec(){
-        layoutGeneral.addEventFilter(KeyEvent.KEY_RELEASED, _ -> {
-            actualizarEstilos();
-        });
-        layoutGeneral.setOnMouseReleased(_ -> {
-            actualizarEstilos();
-        });
-    }
-
-
-    private void setEstilo(Node nodo){
-        if (nodo instanceof Slider){
-            nodo.setStyle(archivo.getEstiloSlider());
-            if (nodo.isFocused()){
-                nodo.setStyle(archivo.getEstiloSliderSelec());
-            }
-            return;
-        }
-        if (nodo instanceof Button) {
-            nodo.setStyle(archivo.getEstiloDeBoton());
-            if (nodo.isFocused()) {
-                nodo.setStyle(archivo.getEstiloDeBotonSelec());
-            }
-        }
-    }
-
-    private void actualizarEstilos(){
-        setEstilo(teleportRandom);
-        setEstilo(teleportSeguro);
-        setEstilo(waitForRobots);
-        setEstilo(inicioJuego);
-        setEstilo(nuevoJuego);
-        setEstilo(cantidadColumnas);
-        setEstilo(cantidadFilas);
-
-        if (cantidadColumnas.isFocused())
-            cantidadColumnas.setStyle(archivo.getEstiloSliderSelec());
-        if (cantidadFilas.isFocused())
-            cantidadFilas.setStyle(archivo.getEstiloSliderSelec());
-        for (Node nodo : layoutGrilla.getChildren()) {
-            Button boton = (Button) nodo;
-            boton.setStyle(archivo.getEstiloCasilla() + boton.getWidth() / 5);
-            if (boton.isFocused())
-                boton.setStyle(archivo.getEstiloCasillaSelec() + boton.getWidth() / 5);
-        }
-    }
-
-    private void setVista() {
-        layoutJuego.setMinSize(ANCHO_JUEGO, ALTURA_JUEGO);
-        layoutJuego.setStyle(archivo.getEstiloDeVbox());
-        layoutJuego.getChildren().addAll(layoutArriba, layoutGrilla, layoutAbajo);
-
-        layoutArriba.getChildren().addAll(tituloJuego, nuevoJuego, puntajeJuego);
-        layoutArriba.setStyle(archivo.getEstiloDeVbox());
-
-        puntajeJuego.setStyle(archivo.getEstiloDeTitulo());
-
-        tituloJuego.setStyle(archivo.getEstiloDeTitulo());
-        inicioJuego.setStyle(archivo.getEstiloDeBoton());
-        nuevoJuego.setStyle(archivo.getEstiloDeBoton());
-
-        cantidadFilas.setMaxWidth(200);
-        cantidadColumnas.setMaxWidth(200);
-
-        cantidadColumnas.setStyle(archivo.getEstiloSlider());
-        cantidadFilas.setStyle(archivo.getEstiloSlider());
-        layoutInicio.setStyle(archivo.getEstiloDeVbox());
-        layoutInicio.getChildren().addAll(tituloJuego, cantidadFilas, cantidadColumnas, inicioJuego);
-
-        layoutAbajo.getChildren().addAll(teleportRandom, teleportSeguro, waitForRobots);
-        layoutAbajo.setStyle(archivo.getEstiloDeHbox());
-        for (Node nodo : layoutAbajo.getChildren()) {
-            Button boton = (Button) nodo;
-            boton.setPrefSize(ANCHO_BOTON,ALTO_BOTON);
-            boton.setStyle(archivo.getEstiloDeBoton());
-        }
-
-        layoutGrilla.setMinSize(ALTO_GRILLA, ANCHO_GRILLA);
-        layoutGrilla.setStyle(archivo.getEstiloDeGridPane());
-
-        layoutGeneral.getChildren().addAll(layoutJuego, layoutInicio);
+    private void setEstiloNodo(Node nodo) {
+        nodo.setStyle(nodo instanceof Slider ? archivo.getCssSlider(nodo.isFocused()) : archivo.getCssDeBoton(nodo.isFocused()));
     }
 
     private final Pantalla pantalla;
     private final Archivo archivo;
-    private boolean telePortActivado;
+    private boolean teleportActivado;
 
     private Juego juego;
     private final EventoDeInicio eventoDeInicio;
@@ -229,7 +93,6 @@ public class Vista {
     private final HBox layoutAbajo;
 
     private final Label tituloJuego;
-    private final Label puntajeJuego;
     private final Button teleportRandom;
     private final Button teleportSeguro;
     private final Button waitForRobots;
@@ -242,7 +105,7 @@ public class Vista {
         eventoDeInicio = new EventoDeInicio();
         eventoDeFin = new EventoDeFin();
 
-        telePortActivado = false;
+        teleportActivado = false;
         pantalla = new Pantalla();
         archivo = new Archivo();
 
@@ -255,16 +118,20 @@ public class Vista {
 
         inicioJuego = new Button(archivo.getTextoDeInicioJuego());
         nuevoJuego = new Button(archivo.getTextoDeNuevoJuego());
-        cantidadFilas = new Slider(MIN_FIL,MAX_FIL,MIN_FIL);
-        cantidadColumnas = new Slider(MIN_COL,MAX_COL,MIN_COL);
+        cantidadFilas = new Slider(MIN_FILA, MAX_FILA, MIN_FILA);
+        cantidadColumnas = new Slider(MIN_COLUMNA, MAX_COLUMNA, MIN_COLUMNA);
 
-        puntajeJuego = new Label();
         tituloJuego = new Label(archivo.getTextoDeTituloJuego());
         teleportRandom = new Button(archivo.getTextoDeTeleportRandom());
         teleportSeguro = new Button();
         waitForRobots = new Button(archivo.getTextoDeWaitForRobots());
 
-        setVista();
+        setLayoutJuego();
+        setLayoutArriba();
+        setLayoutInicio();
+        setLayoutAbajo();
+        setGrilla();
+        layoutGeneral.getChildren().addAll(layoutJuego, layoutInicio);
 
         stage.setScene(new Scene(layoutGeneral, ALTURA_SCENE, ANCHO_SCENE));
         stage.setTitle(archivo.getTextoDeTituloJuego());
@@ -272,11 +139,110 @@ public class Vista {
         stage.show();
     }
 
-    public void iniciar() {
-        setListenerEventoInicio();
-        setListenerEventoFin();
-        setListenersBotones();
-        setListenerSelec();
+    public void iniciarJuego() {
         layoutGeneral.fireEvent(eventoDeInicio);
+    }
+
+    public void mostrarPantalla() {
+        pantalla.mostrar(juego, layoutGrilla, eventoDeFin, teleportActivado);
+    }
+
+    public void actualizarEstiloNodos() {
+        setEstiloNodo(nuevoJuego);
+
+        for (Node nodo : layoutInicio.getChildren()) {
+            if (!(nodo instanceof Label))
+                setEstiloNodo(nodo);
+        }
+
+        for (Node nodo : layoutAbajo.getChildren())
+            setEstiloNodo(nodo);
+
+        for (Node nodo : layoutGrilla.getChildren()) {
+            Button boton = (Button) nodo;
+            boton.setStyle(archivo.getCssCasilla(false) + boton.getWidth() / 5);
+            if (boton.isFocused())
+                boton.setStyle(archivo.getCssCasilla(true) + boton.getWidth() / 5);
+        }
+    }
+
+    public void setMenuInicio(boolean activado) {
+        layoutInicio.setDisable(!activado);
+        layoutInicio.setStyle(archivo.getCssDeVbox(activado));
+        layoutJuego.setDisable(activado);
+    }
+
+    public void setJuego(Juego juego) {
+        this.juego = juego;
+    }
+
+    public void setGrillaLayoutJuego() {
+        layoutGrilla.getChildren().clear();
+        int sizeBoton = getSizeBoton(juego.getDimensionesMapa());
+        for (int x = 0; x < juego.getDimensionesMapa().getX(); x++) {
+            for (int y = 0; y < juego.getDimensionesMapa().getY(); y++) {
+                Button boton = new Button();
+                boton.setMaxSize(sizeBoton, sizeBoton);
+                boton.setMinSize(sizeBoton, sizeBoton);
+                layoutGrilla.add(boton, x, y);
+                setListenerBotonGrilla(boton);
+            }
+        }
+    }
+
+    public void setTeleportSeguro(int cantidad) {
+        teleportSeguro.setText(archivo.getTextoDeTeleportSafely(cantidad));
+    }
+
+    public void setTeleportActivado(boolean teleportActivado) {
+        this.teleportActivado = teleportActivado;
+    }
+
+    public boolean getTeleportActivado() {
+        return teleportActivado;
+    }
+
+    public int getCantidadColumnas() {
+        return (int) cantidadColumnas.getValue();
+    }
+
+    public int getCantidadFilas() {
+        return (int) cantidadFilas.getValue();
+    }
+
+    public void setListenerEventoInicio(EventHandler<EventoDeInicio> event) {
+        layoutGeneral.addEventHandler(EventoDeInicio.INICIO_DE_JUEGO_EVENT_TYPE, event);
+    }
+
+    public void setListenerEventoFin(EventHandler<EventoDeFin> event) {
+        layoutGeneral.addEventHandler(EventoDeFin.FIN_DE_JUEGO_EVENT_TYPE, event);
+    }
+
+    public void setListenerInicioJuego(EventHandler<ActionEvent> event) {
+        inicioJuego.setOnAction(event);
+    }
+
+    public void setListenerNuevoJuego(EventHandler<ActionEvent> event) {
+        nuevoJuego.setOnAction(event);
+    }
+
+    public void setListenerTeleportRandom(EventHandler<ActionEvent> event) {
+        teleportRandom.setOnAction(event);
+    }
+
+    public void setListenerTeleportSeguro(EventHandler<ActionEvent> event) {
+        teleportSeguro.setOnAction(event);
+    }
+
+    public void setListenerWaitForRobots(EventHandler<ActionEvent> event) {
+        waitForRobots.setOnAction(event);
+    }
+
+    public void setListenerKeyPressed(EventHandler<KeyEvent> event) {
+        layoutGeneral.addEventHandler(KeyEvent.KEY_RELEASED, event);
+    }
+
+    public void setListenerMouseReleased(EventHandler<MouseEvent> event) {
+        layoutGeneral.setOnMouseReleased(event);
     }
 }

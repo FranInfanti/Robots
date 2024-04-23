@@ -10,18 +10,22 @@ import org.logic.Coordenadas;
 import org.logic.Juego;
 import org.logic.personajes.*;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-
 public class Pantalla {
+    private static final int DISTANCIA_MINIMA = 1;
 
-    private void setEstiloCasilla(GridPane layoutJuego, Coordenadas posicionJugador, boolean telePortActivado) {
+    private boolean esDistanciaMinima(Coordenadas jugador, Button boton) {
+        int x = Math.abs(jugador.getX() - GridPane.getColumnIndex(boton));
+        int y = Math.abs(jugador.getY() - GridPane.getRowIndex(boton));
+
+        return x < DISTANCIA_MINIMA && y < DISTANCIA_MINIMA;
+    }
+
+    private void setEstiloCasilla(GridPane layoutJuego, Coordenadas jugador, boolean teleportActivado) {
         for (Node nodo : layoutJuego.getChildren()) {
             Button boton = (Button) nodo;
-            boton.setStyle(archivo.getEstiloCasilla() + boton.getMaxWidth() / 5);
+            boton.setStyle(archivo.getCssCasilla(false) + boton.getMaxWidth() / 5);
             boton.setGraphic(null);
-            boton.setDisable(true);
-            if ((Math.abs(posicionJugador.getX() - layoutJuego.getColumnIndex(boton)) <= 1 &&  Math.abs(posicionJugador.getY() - layoutJuego.getRowIndex(boton)) <= 1) || telePortActivado)
+            if (esDistanciaMinima(jugador, boton) || teleportActivado)
                 boton.setDisable(false);
         }
     }
@@ -34,33 +38,31 @@ public class Pantalla {
         boton.setGraphic(imageView);
     }
 
+    private Button getBotonPorPosicion(Coordenadas posicion, GridPane gridPane) {
+        Button buscado = null;
+        ObservableList<Node> botones = gridPane.getChildren();
+        for (Node boton : botones)
+            if (posicion.esIgual(new Coordenadas(GridPane.getColumnIndex(boton), GridPane.getRowIndex(boton)))) buscado = (Button) boton;
+        return buscado;
+    }
+
     private final Archivo archivo;
-    private final BuscadorBoton buscadorBoton;
 
     public Pantalla() {
         archivo = new Archivo();
-        buscadorBoton = new BuscadorBoton();
     }
 
-    public void mostrar(Juego juego, GridPane layoutJuego, EventoDeFin eventoDeFin, boolean telePortActivado) {
-        setEstiloCasilla(layoutJuego, juego.jugador.getCoordenadas(), telePortActivado);
+    public void mostrar(Juego juego, GridPane layoutJuego, EventoDeFin eventoDeFin, boolean teleportActivado) {
+        setEstiloCasilla(layoutJuego, juego.getCoordenadasJugador(), teleportActivado);
         layoutJuego.fireEvent(eventoDeFin);
 
-        Button boton = buscadorBoton.getBotonPorPosicion(juego.getCoordenadasJugador(), layoutJuego);
+        Button boton = getBotonPorPosicion(juego.getCoordenadasJugador(), layoutJuego);
         colocarImagen(boton, archivo.getImagenJugador());
 
         for (int i = 0; i < juego.getCantidadEnemigos(); i++) {
             Enemigo enemigo = juego.getEnemigo(i);
-            if (enemigo != null) {
-                Button botonEnemigo = buscadorBoton.getBotonPorPosicion(enemigo.getCoordenadas(), layoutJuego);
-
-                if (enemigo instanceof RobotX1)
-                    colocarImagen(botonEnemigo, archivo.getImagenRobotX1());
-                else if (enemigo instanceof RobotX2)
-                    colocarImagen(botonEnemigo, archivo.getImagenRobotX2());
-                else
-                    colocarImagen(botonEnemigo, archivo.getImagenExplosion());
-            }
+            if (enemigo != null)
+                colocarImagen(getBotonPorPosicion(enemigo.getCoordenadas(), layoutJuego), enemigo.getImagen());
         }
     }
 }

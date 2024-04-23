@@ -1,19 +1,17 @@
 package org.logic.personajes;
 
 import org.logic.Coordenadas;
-import java.util.Iterator;
-import java.util.LinkedList;
+
+import java.util.*;
 
 public abstract class Enemigo extends Personaje {
     public Enemigo(Coordenadas coordenadas) {
         super(coordenadas);
     }
 
-    public abstract void mover(Coordenadas coordenadasJugador, LinkedList<?> aux);
+    public abstract void mover(Coordenadas coordenadasJugador, Collection<?> aux);
 
-    public abstract int getPuntos();
-
-    public void isEliminado(LinkedList<Enemigo> enemigos) {
+    public void isEliminado(HashSet<Enemigo> enemigos) {
         boolean sigo = true;
         Iterator<Enemigo> iterator = enemigos.iterator();
         while (iterator.hasNext() && sigo) {
@@ -28,4 +26,6 @@ public abstract class Enemigo extends Personaje {
             }
         }
     }
+
+    public abstract int getPuntaje();
 }
