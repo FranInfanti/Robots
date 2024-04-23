@@ -72,16 +72,4 @@ public class Archivo {
     public String getImagenJugador() {
         return "jugador.png";
     }
-
-    public String getImagenRobotX1() {
-        return "robotX1.png";
-    }
-
-    public String getImagenRobotX2() {
-        return "robotX2.png";
-    }
-
-    public String getImagenExplosion() {
-        return "explosion.png";
-    }
 }

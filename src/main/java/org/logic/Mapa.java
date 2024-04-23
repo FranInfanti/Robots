@@ -27,15 +27,15 @@ public class Mapa {
     }
 
     private final Coordenadas dimensionMapa;
-    private final Random rand;
 
     public Mapa(Coordenadas dimensionMapa) {
         this.dimensionMapa = dimensionMapa;
-        rand = new Random();
     }
 
     public Coordenadas generarCoordenada(Collection<?> aux, Jugador jugador) {
         Coordenadas aleatorias = new Coordenadas(0,0);
+        Random rand = new Random();
+
         do {
             aleatorias.setX(rand.nextInt(dimensionMapa.getX()));
             aleatorias.setY(rand.nextInt(dimensionMapa.getY()));

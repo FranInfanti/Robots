@@ -1,0 +1,94 @@
+@startuml
+hide circle
+skinparam monochrome true
+skinparam classAttributeIconSize 0
+skinparam roundcorner 0
+
+class Juego {
+  - puntos: Int
+  - nivelActual: Int
+  - mapa: Mapa
+  - jugador: Jugador
+  - robots: HashSet<Enemigo>
+  - explosiones: HashSet<Enemigo>
+  
+  <<Create>> constructor(dimensionesDelMapa: Coordenadas): Juego
+  
+  + moverJugador(coordenadas: Coordenadas): Void
+  + teleportJugador(coordenadas: Coordenadas): Void
+  + estadoJuego(): Void
+}
+
+class Coordenadas {
+  - x: Int
+  - y: Int
+  
+  <<Create>> constructor(x: Int, y: Int): Coordenadas
+  
+  + esIgual(coordenadas: Coordenadas): Boolean
+  + calcularDesplazamiento(coordenadas: Coordenadas): Coordenadas
+}
+
+class Mapa {
+  - dimensionesDelMapa: Coordenadas
+
+  <<Create>> constructor(dimensionesDelMapa: Coordenadas): Mapa
+  
+  + generarCoordenadas(aux: Collection<?>, jugador: Jugador): Coordenadas
+  + getCentroMapa(): Coordenadas
+}
+
+abstract class Personaje {
+  - coordenadas: Coordenadas
+  - eliminado: Boolean
+  
+  <<Create>> constructor(coordenadas: Coordenadas): Personaje
+  
+  + mover(coordenadas: Coordenadas, aux: Collection<?>): abstract Void
+  + getImagen(): abstract String
+}
+
+class Jugador extends Personaje {
+  - teleportSeguro: Int
+  
+  <<Create>> constructor(coordenadas: Coordenadas): Jugador
+  
+  + teleportSeguro(coordenadas: Coordenadas): Boolean
+  + teleportAleatorio(coordenadas: coordenadas): Boolean
+}
+
+abstract class Enemigo extends Personaje {
+  <<Create>> constructor(coordenadas: Coordenadas): Enemigo
+  
+  + isEliminado(enemigos: HashSet<Enemigos>): Boolean
+  + getPuntaje(): abstract Int
+}
+
+class RobotX1 extends Enemigo {
+  <<Create>> constructor(coordenadas: Coordenadas): RobotX1
+}
+
+class RobotX2 extends Enemigo {
+  <<Create>> constructor(coordenadas: Coordenadas): RobotX2
+}
+
+class Explosion extends Enemigo {
+  <<Create>> constructor(coordenadas: Coordenadas): Explosion
+}
+
+class Puntaje {
+  - puntos: Int
+  
+  <<Create>> constructor(): Puntaje
+  
+  + sumarPuntos(puntos: Int): Void
+}
+
+Juego *-- Personaje
+Juego *-- Mapa
+Juego *--Puntaje
+
+Mapa o-- Coordenadas
+Personaje o-- Coordenadas
+
+@enduml

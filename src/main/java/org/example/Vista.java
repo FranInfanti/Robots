@@ -22,6 +22,7 @@ public class Vista {
     private static final int MAX_FILA = 30;
     private static final int MIN_COLUMNA = 10;
     private static final int MAX_COLUMNA = 30;
+    private static final int TAMANIO_BOTON = 5;
 
     private void setLayoutInicio() {
         cantidadColumnas.setStyle(archivo.getCssSlider(false));
@@ -160,9 +161,9 @@ public class Vista {
 
         for (Node nodo : layoutGrilla.getChildren()) {
             Button boton = (Button) nodo;
-            boton.setStyle(archivo.getCssCasilla(false) + boton.getWidth() / 5);
+            boton.setStyle(archivo.getCssCasilla(false) + boton.getWidth() /  TAMANIO_BOTON);
             if (boton.isFocused())
-                boton.setStyle(archivo.getCssCasilla(true) + boton.getWidth() / 5);
+                boton.setStyle(archivo.getCssCasilla(true) + boton.getWidth() / TAMANIO_BOTON);
         }
     }
 

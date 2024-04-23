@@ -7,6 +7,7 @@ public class Juego {
     private static final int CANTIDAD_ROBOTX1_INICIAL = 8;
     private static final int CANTIDAD_ROBOTX2_INICIAL = 2;
     private static final int TELEPORTS_SEGUROS_DISPONIBLES = 1;
+    private static final int NIVEL_INICIAL = 1;
 
     private void agregarRobots() {
         for (int i = 0; i < CANTIDAD_ROBOTX1_INICIAL * nivelActual; i++)
@@ -42,7 +43,7 @@ public class Juego {
         while (iterator.hasNext()) {
             Enemigo enemigo = iterator.next();
             if (enemigo.getEliminado()) {
-                puntos += enemigo.getPuntaje();
+                puntos.sumarPuntos(enemigo.getPuntaje());
                 iterator.remove();
             }
         }
@@ -63,7 +64,7 @@ public class Juego {
     }
 
     private int nivelActual;
-    private int puntos;
+    private final Puntaje puntos;
     private final Mapa mapa;
 
     public final Jugador jugador;
@@ -71,13 +72,12 @@ public class Juego {
     public final HashSet<Enemigo> explosiones;
 
     public Juego(Coordenadas dimensionesMapa) {
-        nivelActual = 1;
-        puntos = 0;
+        nivelActual = NIVEL_INICIAL;
+        puntos = new Puntaje();
         mapa = new Mapa(dimensionesMapa);
         jugador = new Jugador(mapa.getCentroMapa(), TELEPORTS_SEGUROS_DISPONIBLES);
         robots = new LinkedHashSet<>();
         explosiones = new LinkedHashSet<>();
-
         agregarRobots();
     }
 
@@ -107,7 +107,7 @@ public class Juego {
     }
 
     public int getPuntos() {
-        return puntos;
+        return puntos.getPuntos();
     }
 
     public int getTeleportsDisponibles() {
