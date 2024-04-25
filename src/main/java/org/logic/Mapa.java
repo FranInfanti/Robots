@@ -34,6 +34,10 @@ public class Mapa {
         rand = new Random();
     }
 
+    public int calcularCantidad(){
+         return getDimensionMapa().getX() * getDimensionMapa().getY() / (getDimensionMapa().getX() + getDimensionMapa().getY());
+    }
+
     public Coordenadas generarCoordenada(Collection<?> aux, Jugador jugador) {
         Coordenadas aleatorias = new Coordenadas(0,0);
         do {
