@@ -4,16 +4,19 @@ import org.logic.personajes.*;
 import java.util.*;
 
 public class Juego {
-    private static final int CANTIDAD_ROBOTX1_INICIAL = 8;
-    private static final int CANTIDAD_ROBOTX2_INICIAL = 2;
+    private static final double PORCENTAJE_ROBOTX1 = 0.8;
+    private static final double PORCENTAJE_ROBOTX2 = 0.2;
     private static final int TELEPORTS_SEGUROS_DISPONIBLES = 1;
     private static final int NIVEL_INICIAL = 1;
 
     private void agregarRobots() {
-        for (int i = 0; i < CANTIDAD_ROBOTX1_INICIAL * nivelActual; i++)
+        int cantidadRobotX1 = (int) (mapa.getCantidadEnemigos() * PORCENTAJE_ROBOTX1);
+        int cantidadRobotX2 = (int) (mapa.getCantidadEnemigos() * PORCENTAJE_ROBOTX2);
+
+        for (int i = 0; i < cantidadRobotX1 * nivelActual; i++)
             robots.add(new RobotX1(mapa.generarCoordenada(robots, jugador)));
 
-        for (int i = 0; i < CANTIDAD_ROBOTX2_INICIAL * nivelActual; i++)
+        for (int i = 0; i < cantidadRobotX2 * nivelActual; i++)
             robots.add(new RobotX2(mapa.generarCoordenada(robots, jugador)));
     }
 

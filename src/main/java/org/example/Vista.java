@@ -6,7 +6,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import org.example.eventos.*;
+import org.example.eventos.EventoDeFin;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -14,45 +14,53 @@ import org.logic.Coordenadas;
 import org.logic.Juego;
 
 public class Vista {
-    private static final int ALTURA_SCENE = 650;
-    private static final int ANCHO_SCENE = 650;
-    private static final int ALTO_GRILLA = 400;
-    private static final int ANCHO_GRILLA = 400;
-    private static final int MIN_FILA = 10;
-    private static final int MAX_FILA = 30;
-    private static final int MIN_COLUMNA = 10;
-    private static final int MAX_COLUMNA = 30;
-    private static final int TAMANIO_BOTON = 5;
-
-    private void setLayoutInicio() {
-        cantidadColumnas.setStyle(archivo.getCssSlider(false));
-        cantidadFilas.setStyle(archivo.getCssSlider(false));
-        inicioJuego.setStyle(archivo.getCssDeBoton(false));
-        layoutInicio.setStyle(archivo.getCssDeVbox(true));
-        layoutInicio.getChildren().addAll(tituloJuego, cantidadFilas, cantidadColumnas, inicioJuego);
-    }
-
-    private void setLayoutJuego() {
-        layoutJuego.setStyle(archivo.getCssDeVboxJuego());
-        layoutJuego.getChildren().addAll(layoutArriba, layoutGrilla, layoutAbajo);
-    }
-
-    private void setLayoutArriba() {
-        tituloJuego.setStyle(archivo.getCssDeTitulo());
-        nuevoJuego.setStyle(archivo.getCssDeBoton(false));
-        layoutArriba.setStyle(archivo.getCssDeVbox(true));
-        layoutArriba.getChildren().addAll(tituloJuego, nuevoJuego);
-    }
-
-    private void setGrilla() {
-        layoutGrilla.setStyle(archivo.getCssDeGridPane(ANCHO_GRILLA, ALTO_GRILLA));
-    }
-
-    private void setLayoutAbajo() {
-        layoutAbajo.getChildren().addAll(teleportRandom, teleportSeguro, waitForRobots);
-        layoutAbajo.setStyle(archivo.getCssDeHbox());
+    private void setCssInteractivos() {
+        cantidadFilas.setStyle(archivo.getCssSlider());
+        cantidadColumnas.setStyle(archivo.getCssSlider());
+        inicioJuego.setStyle(archivo.getCssDeBoton(inicioJuego.isFocused()));
+        nuevoJuego.setStyle(archivo.getCssDeBoton(nuevoJuego.isFocused()));
         for (Node nodo : layoutAbajo.getChildren())
-            nodo.setStyle(archivo.getCssDeBoton(false));
+            nodo.setStyle(archivo.getCssDeBoton(nodo.isFocused()));
+
+        for (Node nodo : layoutGrilla.getChildren())
+            nodo.setStyle(archivo.getCssCasilla(nodo.isFocused()));
+    }
+
+    private void setCssLayoutInicio() {
+        tituloJuego.setStyle(archivo.getCssDeTitulo());
+        layoutInicio.setStyle(archivo.getCssDeVbox());
+    }
+
+    private void setCssLayoutJuego() {
+        layoutJuego.setStyle(archivo.getCssDeVboxJuego());
+    }
+
+    private void setCssLayoutArriba() {
+        instrucciones.setStyle(archivo.getCssTextos());
+        layoutArriba.setStyle(archivo.getCssDeVbox());
+    }
+
+    private void setCssGrilla() {
+        layoutGrilla.setStyle(archivo.getCssDeGridPane(Archivo.ANCHO_GRILLA, Archivo.ALTO_GRILLA));
+    }
+
+    private void setCssLayoutAbajo() {
+        layoutAbajo.setStyle(archivo.getCssDeHbox());
+    }
+
+    private void setLayouts() {
+        layoutInicio.getChildren().addAll(tituloJuego, cantidadFilas, cantidadColumnas, inicioJuego);
+        layoutJuego.getChildren().addAll(layoutArriba, layoutGrilla, layoutAbajo);
+        layoutArriba.getChildren().addAll(nuevoJuego, instrucciones);
+        layoutAbajo.getChildren().addAll(teleportRandom, teleportSeguro, waitForRobots);
+        layoutGeneral.getChildren().addAll(layoutJuego, layoutInicio);
+
+        setCssInteractivos();
+        setCssLayoutInicio();
+        setCssLayoutJuego();
+        setCssLayoutArriba();
+        setCssGrilla();
+        setCssLayoutAbajo();
     }
 
     private void setListenerBotonGrilla(Button boton) {
@@ -70,12 +78,8 @@ public class Vista {
 
     private int getSizeBoton(Coordenadas dimensionesMapa) {
         if (dimensionesMapa.getX() > dimensionesMapa.getY())
-            return ANCHO_GRILLA / dimensionesMapa.getX();
-        return ALTO_GRILLA / dimensionesMapa.getY();
-    }
-
-    private void setEstiloNodo(Node nodo) {
-        nodo.setStyle(nodo instanceof Slider ? archivo.getCssSlider(nodo.isFocused()) : archivo.getCssDeBoton(nodo.isFocused()));
+            return Archivo.ANCHO_GRILLA / dimensionesMapa.getX();
+        return Archivo.ALTO_GRILLA / dimensionesMapa.getY();
     }
 
     private final Pantalla pantalla;
@@ -83,7 +87,6 @@ public class Vista {
     private boolean teleportActivado;
 
     private Juego juego;
-    private final EventoDeInicio eventoDeInicio;
     private final EventoDeFin eventoDeFin;
 
     private final StackPane layoutGeneral;
@@ -99,17 +102,16 @@ public class Vista {
     private final Button waitForRobots;
     private final Button inicioJuego;
     private final Button nuevoJuego;
+
     private final Slider cantidadColumnas;
     private final Slider cantidadFilas;
+    private final Label instrucciones;
 
     public Vista(Stage stage) {
-        eventoDeInicio = new EventoDeInicio();
-        eventoDeFin = new EventoDeFin();
-
         teleportActivado = false;
+        eventoDeFin = new EventoDeFin();
         pantalla = new Pantalla();
         archivo = new Archivo();
-
         layoutGeneral = new StackPane();
         layoutInicio = new VBox();
         layoutJuego = new VBox();
@@ -117,31 +119,28 @@ public class Vista {
         layoutGrilla = new GridPane();
         layoutAbajo = new HBox();
 
+        cantidadFilas = new Slider(Archivo.MIN_FILA, Archivo.MAX_FILA, Archivo.MIN_FILA);
+        cantidadColumnas = new Slider(Archivo.MIN_COLUMNA, Archivo.MAX_COLUMNA, Archivo.MIN_COLUMNA);
+        instrucciones =  new Label(archivo.getInstrucciones());
+        tituloJuego = new Label(archivo.getTextoDeTituloJuego());
         inicioJuego = new Button(archivo.getTextoDeInicioJuego());
         nuevoJuego = new Button(archivo.getTextoDeNuevoJuego());
-        cantidadFilas = new Slider(MIN_FILA, MAX_FILA, MIN_FILA);
-        cantidadColumnas = new Slider(MIN_COLUMNA, MAX_COLUMNA, MIN_COLUMNA);
-
-        tituloJuego = new Label(archivo.getTextoDeTituloJuego());
         teleportRandom = new Button(archivo.getTextoDeTeleportRandom());
         teleportSeguro = new Button();
         waitForRobots = new Button(archivo.getTextoDeWaitForRobots());
 
-        setLayoutJuego();
-        setLayoutArriba();
-        setLayoutInicio();
-        setLayoutAbajo();
-        setGrilla();
-        layoutGeneral.getChildren().addAll(layoutJuego, layoutInicio);
+        setLayouts();
 
-        stage.setScene(new Scene(layoutGeneral, ALTURA_SCENE, ANCHO_SCENE));
+        stage.setScene(new Scene(layoutGeneral, Archivo.ALTURA_SCENE, Archivo.ANCHO_SCENE));
         stage.setTitle(archivo.getTextoDeTituloJuego());
         stage.setResizable(false);
         stage.show();
     }
 
     public void iniciarJuego() {
-        layoutGeneral.fireEvent(eventoDeInicio);
+        setMenuInicio(true);
+        cantidadFilas.setValue(Archivo.MIN_FILA);
+        cantidadColumnas.setValue(Archivo.MIN_COLUMNA);
     }
 
     public void mostrarPantalla() {
@@ -149,28 +148,13 @@ public class Vista {
     }
 
     public void actualizarEstiloNodos() {
-        setEstiloNodo(nuevoJuego);
-
-        for (Node nodo : layoutInicio.getChildren()) {
-            if (!(nodo instanceof Label))
-                setEstiloNodo(nodo);
-        }
-
-        for (Node nodo : layoutAbajo.getChildren())
-            setEstiloNodo(nodo);
-
-        for (Node nodo : layoutGrilla.getChildren()) {
-            Button boton = (Button) nodo;
-            boton.setStyle(archivo.getCssCasilla(false) + boton.getWidth() /  TAMANIO_BOTON);
-            if (boton.isFocused())
-                boton.setStyle(archivo.getCssCasilla(true) + boton.getWidth() / TAMANIO_BOTON);
-        }
+        setCssInteractivos();
     }
 
     public void setMenuInicio(boolean activado) {
         layoutInicio.setDisable(!activado);
-        layoutInicio.setStyle(archivo.getCssDeVbox(activado));
         layoutJuego.setDisable(activado);
+        layoutInicio.setOpacity(activado ? Archivo.VISIBLE : 0);
     }
 
     public void setJuego(Juego juego) {
@@ -209,10 +193,6 @@ public class Vista {
 
     public int getCantidadFilas() {
         return (int) cantidadFilas.getValue();
-    }
-
-    public void setListenerEventoInicio(EventHandler<EventoDeInicio> event) {
-        layoutGeneral.addEventHandler(EventoDeInicio.INICIO_DE_JUEGO_EVENT_TYPE, event);
     }
 
     public void setListenerEventoFin(EventHandler<EventoDeFin> event) {

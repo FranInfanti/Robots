@@ -5,7 +5,6 @@ import org.logic.personajes.Jugador;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Random;
 
 public class Mapa {
@@ -41,6 +40,10 @@ public class Mapa {
             aleatorias.setY(rand.nextInt(dimensionMapa.getY()));
         } while (coordenadaOcupada(aleatorias, (HashSet<Enemigo>) aux, jugador));
         return aleatorias;
+    }
+
+    public int getCantidadEnemigos() {
+        return getDimensionMapa().getX() * getDimensionMapa().getY() / (getDimensionMapa().getX() + getDimensionMapa().getY());
     }
 
     public Coordenadas getCentroMapa() {

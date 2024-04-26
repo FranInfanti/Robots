@@ -6,12 +6,11 @@ import org.logic.Juego;
 
 public class Controlador {
     private void fireAlerta() {
-        Alert alerta = new Alert(Alert.AlertType.WARNING);
+        var alerta = new Alert(Alert.AlertType.WARNING);
         alerta.setTitle(archivo.getTextoDeTituloJuego());
         alerta.setContentText(archivo.getTextoResultado(juego.getNivel(), juego.getPuntos()));
         alerta.setHeaderText(archivo.getTextoAlertaFinal());
         alerta.show();
-        vista.iniciarJuego();
     }
 
     private Juego juego;
@@ -24,11 +23,6 @@ public class Controlador {
     }
 
     public void iniciar() {
-        vista.setListenerEventoInicio(_ -> {
-            vista.setMenuInicio(true);
-            vista.actualizarEstiloNodos();
-        });
-
         vista.setListenerEventoFin(_ -> {
             if (juego.getJugadorEliminado())
                 fireAlerta();
