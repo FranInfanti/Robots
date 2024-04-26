@@ -1,6 +1,16 @@
 package org.example;
 
 public class Archivo {
+    public static final int ALTURA_SCENE = 650;
+    public static final int ANCHO_SCENE = 650;
+    public static final int ALTO_GRILLA = 400;
+    public static final int ANCHO_GRILLA = 400;
+    public static final int MIN_FILA = 10;
+    public static final int MAX_FILA = 30;
+    public static final int MIN_COLUMNA = 10;
+    public static final int MAX_COLUMNA = 30;
+    public static final int VISIBLE = 1;
+
     public String getTextoDeTituloJuego() {
         return "Robots";
     }
@@ -17,24 +27,12 @@ public class Archivo {
         return "Teleport Random";
     }
 
-    public String getTextoComoJugar() {
-        return "Seleccione la casilla donde quiera ir, clic con el MOUSE o moviendo con las teclas y presionando ENTER";
-    }
-
-    public String getTextoCantFilas() {
-        return "Cantidad de Filas \n10          15          20          25          30";
-    }
-
-    public String getTextoCantColumnas() {
-        return "Cantidad de Columnas \n10          15          20          25          30";
+    public String getInstrucciones() {
+        return "Seleccione la casilla donde quiera ir, haciendo clic con el MOUSE o con {<,^,v,>} y presionando ENTER";
     }
 
     public String getTextoDeTeleportSafely(int teleportsDisponibles) {
         return "Teleport Safely\n  (Remaining: %d)" .formatted(teleportsDisponibles);
-    }
-
-    public String getTextoPuntos(int puntos) {
-        return "Puntos: %d" .formatted(puntos);
     }
 
     public String getTextoDeWaitForRobots() {
@@ -42,7 +40,7 @@ public class Archivo {
     }
 
     public String getTextoAlertaFinal() {
-        return "Gracias Por Jugar :)";
+        return "Eliminado";
     }
 
     public String getTextoResultado(int nivel, int puntos) {
@@ -62,23 +60,21 @@ public class Archivo {
         return "-fx-font-family: Arial; -fx-font-weight: 900; -fx-text-fill: #aaccffff; -fx-font-size: 20; -fx-background-color: %s;  -fx-background-radius: 20; -fx-min-width: 200; -fx-min-height: 65" .formatted(color);
     }
 
-    public String getCssSlider(boolean seleccionado) {
-        String opacidad = seleccionado ? "0.1" : "0.2";
-        return "-fx-opacity: %s; -fx-max-width: 200" .formatted(opacidad);
+    public String getCssSlider() {
+        return "-fx-opacity: 0.9; -fx-max-width: 200; -fx-show-tick-labels: true; -fx-show-tick-marks: true; -fx-major-tick-unit: 5; -fx-minor-tick-count: 5";
     }
 
     public String getCssCasilla(boolean seleccionado) {
         String color = seleccionado ? "#0044aaff" : "#003380ff";
-        return "-fx-background-color: "+ color +"; -fx-background-radius: 20%";
+        return "-fx-background-radius: 20%;" +  "-fx-background-color: %s" .formatted(color);
     }
 
     public String getCssDeHbox() {
         return "-fx-alignment: CENTER; -fx-background-color: #002255ff";
     }
 
-    public String getCssDeVbox(boolean activado) {
-        int opacidad = activado ? 1 : 0;
-        return "-fx-alignment: CENTER; -fx-background-color: #002255ff; -fx-spacing: 10; -fx-opacity: %d" .formatted(opacidad);
+    public String getCssDeVbox() {
+        return "-fx-alignment: CENTER; -fx-background-color: #002255ff; -fx-spacing: 10";
     }
 
     public String getCssDeVboxJuego() {
@@ -91,25 +87,5 @@ public class Archivo {
 
     public String getImagenJugador() {
         return "jugador.png";
-    }
-
-    public String getImagenRobotX1() {
-        return "robotX1.png";
-    }
-
-    public String getImagenRobotX2() {
-        return "robotX2.png";
-    }
-
-    public String getImagenExplosion() {
-        return "explosion.png";
-    }
-
-    public String getEstiloSliderSelec() { return "-fx-opacity: 0.1"; }
-
-    public String getEstiloDeBotonSelec() { return "-fx-font-family: Arial; -fx-font-weight: 900; -fx-text-fill: #aaccffff; -fx-font-size: 20; -fx-background-color: #0044aaff;  -fx-background-radius: 20;";
-    }
-
-    public String getEstiloCasillaSelec() {  return "-fx-cursor: pointer; -fx-background-color: #0044aaff;  -fx-background-radius: ";
     }
 }

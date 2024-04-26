@@ -7,17 +7,16 @@ public class Juego {
     private static final double PORCENTAJE_ROBOTX1 = 0.8;
     private static final double PORCENTAJE_ROBOTX2 = 0.2;
     private static final int TELEPORTS_SEGUROS_DISPONIBLES = 1;
+    private static final int NIVEL_INICIAL = 1;
 
     private void agregarRobots() {
-        int cantidadRobots = mapa.calcularCantidad();
+        int cantidadRobotX1 = (int) (mapa.getCantidadEnemigos() * PORCENTAJE_ROBOTX1);
+        int cantidadRobotX2 = (int) (mapa.getCantidadEnemigos() * PORCENTAJE_ROBOTX2);
 
-        int cantX1 = (int) (cantidadRobots * PORCENTAJE_ROBOTX1);
-        int cantX2 = (int) (cantidadRobots * PORCENTAJE_ROBOTX2);
-
-        for (int i = 0; i < cantX1 * nivelActual; i++)
+        for (int i = 0; i < cantidadRobotX1 * nivelActual; i++)
             robots.add(new RobotX1(mapa.generarCoordenada(robots, jugador)));
 
-        for (int i = 0; i < cantX2 * nivelActual; i++)
+        for (int i = 0; i < cantidadRobotX2 * nivelActual; i++)
             robots.add(new RobotX2(mapa.generarCoordenada(robots, jugador)));
     }
 
@@ -47,7 +46,7 @@ public class Juego {
         while (iterator.hasNext()) {
             Enemigo enemigo = iterator.next();
             if (enemigo.getEliminado()) {
-                puntos += enemigo.getPuntaje();
+                puntos.sumarPuntos(enemigo.getPuntaje());
                 iterator.remove();
             }
         }
@@ -68,7 +67,7 @@ public class Juego {
     }
 
     private int nivelActual;
-    private int puntos;
+    private final Puntaje puntos;
     private final Mapa mapa;
 
     public final Jugador jugador;
@@ -76,13 +75,12 @@ public class Juego {
     public final HashSet<Enemigo> explosiones;
 
     public Juego(Coordenadas dimensionesMapa) {
-        nivelActual = 1;
-        puntos = 0;
+        nivelActual = NIVEL_INICIAL;
+        puntos = new Puntaje();
         mapa = new Mapa(dimensionesMapa);
         jugador = new Jugador(mapa.getCentroMapa(), TELEPORTS_SEGUROS_DISPONIBLES);
         robots = new LinkedHashSet<>();
         explosiones = new LinkedHashSet<>();
-
         agregarRobots();
     }
 
@@ -112,7 +110,7 @@ public class Juego {
     }
 
     public int getPuntos() {
-        return puntos;
+        return puntos.getPuntos();
     }
 
     public int getTeleportsDisponibles() {

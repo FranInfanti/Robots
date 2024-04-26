@@ -37,9 +37,4 @@ public class RobotX1 extends Enemigo {
     public String getImagen() {
         return IMAGEN;
     }
-
-    @Override
-    public int getPuntos() {
-        return PUNTAJE_X1;
-    };
 }

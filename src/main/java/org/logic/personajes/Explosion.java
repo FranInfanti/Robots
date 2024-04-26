@@ -23,9 +23,4 @@ public class Explosion extends Enemigo {
     public String getImagen() {
         return IMAGEN;
     }
-
-    @Override
-    public int getPuntos() {
-        return 0;
-    }
 }

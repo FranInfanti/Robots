@@ -23,7 +23,7 @@ public class Pantalla {
     private void setEstiloCasilla(GridPane layoutJuego, Coordenadas jugador, boolean teleportActivado) {
         for (Node nodo : layoutJuego.getChildren()) {
             Button boton = (Button) nodo;
-            boton.setStyle(archivo.getCssCasilla(false) + boton.getMaxWidth() / 5);
+            boton.setStyle(archivo.getCssCasilla(false));
             boton.setGraphic(null);
             if (esDistanciaMinima(jugador, boton) || teleportActivado)
                 boton.setDisable(false);
