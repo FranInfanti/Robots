@@ -46,7 +46,7 @@ public class Juego {
         while (iterator.hasNext()) {
             Enemigo enemigo = iterator.next();
             if (enemigo.getEliminado()) {
-                puntos.sumarPuntos(enemigo.getPuntaje());
+                puntos.sumarPuntos(enemigo.getDesplazamiento());
                 iterator.remove();
             }
         }

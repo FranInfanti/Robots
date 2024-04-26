@@ -27,5 +27,5 @@ public abstract class Enemigo extends Personaje {
         }
     }
 
-    public abstract int getPuntaje();
+    public abstract int getDesplazamiento();
 }

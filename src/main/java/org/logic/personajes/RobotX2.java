@@ -2,14 +2,13 @@ package org.logic.personajes;
 
 import org.logic.Coordenadas;
 
+import javax.crypto.spec.DESedeKeySpec;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 
 public class RobotX2 extends Enemigo {
-    private static final int DEZSPLAZAMIENTO = 2;
-    private static final int PUNTAJE = 20;
-    private static final String IMAGEN = "robotX2.png";
+    private static final int DESPLAZAMIENTO = 2;
 
     public RobotX2(Coordenadas coordenadas) {
         super(coordenadas);
@@ -19,7 +18,7 @@ public class RobotX2 extends Enemigo {
     public void mover(Coordenadas coordenadasJugador, Collection<?> aux) {
         Coordenadas distanciaMover;
         int x, y;
-        for (int i = 0; i < DEZSPLAZAMIENTO && !getEliminado(); i++) {
+        for (int i = 0; i < DESPLAZAMIENTO && !getEliminado(); i++) {
             distanciaMover = getCoordenadas().calcularDesplazamiento(coordenadasJugador);
             x = distanciaMover.getX() + getCoordenadas().getX();
             y = distanciaMover.getY() + getCoordenadas().getY();
@@ -30,12 +29,7 @@ public class RobotX2 extends Enemigo {
     }
 
     @Override
-    public int getPuntaje() {
-        return PUNTAJE;
-    }
-
-    @Override
-    public String getImagen() {
-        return IMAGEN;
+    public int getDesplazamiento() {
+        return DESPLAZAMIENTO;
     }
 }

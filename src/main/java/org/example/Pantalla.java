@@ -17,7 +17,7 @@ public class Pantalla {
         int x = Math.abs(jugador.getX() - GridPane.getColumnIndex(boton));
         int y = Math.abs(jugador.getY() - GridPane.getRowIndex(boton));
 
-        return x < DISTANCIA_MINIMA && y < DISTANCIA_MINIMA;
+        return x <= DISTANCIA_MINIMA && y <= DISTANCIA_MINIMA;
     }
 
     private void setEstiloCasilla(GridPane layoutJuego, Coordenadas jugador, boolean teleportActivado) {
@@ -62,7 +62,7 @@ public class Pantalla {
         for (int i = 0; i < juego.getCantidadEnemigos(); i++) {
             Enemigo enemigo = juego.getEnemigo(i);
             if (enemigo != null)
-                colocarImagen(getBotonPorPosicion(enemigo.getCoordenadas(), layoutJuego), enemigo.getImagen());
+                colocarImagen(getBotonPorPosicion(enemigo.getCoordenadas(), layoutJuego), archivo.getImagenEnemigo(enemigo.getDesplazamiento()));
         }
     }
 }

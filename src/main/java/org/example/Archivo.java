@@ -88,4 +88,11 @@ public class Archivo {
     public String getImagenJugador() {
         return "jugador.png";
     }
+
+
+    public String getImagenEnemigo(int robotDesplazamiento) {
+        if (robotDesplazamiento == 0)
+            return "explosion.png";
+        return "robotX%d.png".formatted(robotDesplazamiento);
+    }
 }

@@ -7,14 +7,11 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 public class RobotX1 extends Enemigo {
-    private static final int PUNTAJE = 10;
-    private static final String IMAGEN = "robotX1.png";
+    private static final int DESPLAZAMIENTO = 1;
 
     public RobotX1(Coordenadas coordenadas) {
         super(coordenadas);
     }
-
-    private static final int PUNTAJE_X1 = 10;
 
     @Override
     public void mover(Coordenadas coordenadasJugador, Collection<?> aux) {
@@ -29,12 +26,7 @@ public class RobotX1 extends Enemigo {
     }
 
     @Override
-    public int getPuntaje() {
-        return PUNTAJE;
-    }
-
-    @Override
-    public String getImagen() {
-        return IMAGEN;
+    public int getDesplazamiento() {
+        return DESPLAZAMIENTO;
     }
 }
