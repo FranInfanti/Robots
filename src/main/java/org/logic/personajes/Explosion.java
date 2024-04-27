@@ -5,7 +5,7 @@ import java.util.Collection;
 
 public class Explosion extends Enemigo {
     public Explosion(Coordenadas coordenadas) {
-        super(coordenadas);
+        super(coordenadas, 0);
     }
 
     @Override

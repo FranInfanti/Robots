@@ -11,22 +11,12 @@ import org.logic.Juego;
 import org.logic.personajes.*;
 
 public class Pantalla {
-    private static final int DISTANCIA_MINIMA = 1;
 
-    private boolean esDistanciaMinima(Coordenadas jugador, Button boton) {
-        int x = Math.abs(jugador.getX() - GridPane.getColumnIndex(boton));
-        int y = Math.abs(jugador.getY() - GridPane.getRowIndex(boton));
-
-        return x < DISTANCIA_MINIMA && y < DISTANCIA_MINIMA;
-    }
-
-    private void setEstiloCasilla(GridPane layoutJuego, Coordenadas jugador, boolean teleportActivado) {
+    private void setEstiloCasilla(GridPane layoutJuego) {
         for (Node nodo : layoutJuego.getChildren()) {
             Button boton = (Button) nodo;
             boton.setStyle(archivo.getCssCasilla(false));
             boton.setGraphic(null);
-            if (esDistanciaMinima(jugador, boton) || teleportActivado)
-                boton.setDisable(false);
         }
     }
 
@@ -52,8 +42,8 @@ public class Pantalla {
         archivo = new Archivo();
     }
 
-    public void mostrar(Juego juego, GridPane layoutJuego, EventoDeFin eventoDeFin, boolean teleportActivado) {
-        setEstiloCasilla(layoutJuego, juego.getCoordenadasJugador(), teleportActivado);
+    public void mostrar(Juego juego, GridPane layoutJuego, EventoDeFin eventoDeFin) {
+        setEstiloCasilla(layoutJuego);
         layoutJuego.fireEvent(eventoDeFin);
 
         Button boton = getBotonPorPosicion(juego.getCoordenadasJugador(), layoutJuego);

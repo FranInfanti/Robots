@@ -28,7 +28,7 @@ public class Archivo {
     }
 
     public String getInstrucciones() {
-        return "Seleccione la casilla donde quiera ir, haciendo clic con el MOUSE o con {<,^,v,>} y presionando ENTER";
+        return "Seleccione la casilla para la direccion donde quiera ir \nhaciendo clic con el MOUSE o con {<,^,v,>} y presionando ENTER";
     }
 
     public String getTextoDeTeleportSafely(int teleportsDisponibles) {
@@ -90,8 +90,6 @@ public class Archivo {
     }
 
     public String getImagenEnemigo(int desplazamientoEnemigo) {
-        if (desplazamientoEnemigo == 0)
-            return "explosion.png";
-        return "robotX%d.png".formatted(desplazamientoEnemigo);
+        return desplazamientoEnemigo == 0 ? "explosion.png" : "robotX%d.png".formatted(desplazamientoEnemigo);
     }
 }

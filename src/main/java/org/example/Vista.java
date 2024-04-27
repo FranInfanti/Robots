@@ -72,7 +72,7 @@ public class Vista {
                 juego.teleportJugador(new Coordenadas(x,y));
             } else if (!juego.getJugadorEliminado())
                 juego.moverJugador(new Coordenadas(x, y));
-            pantalla.mostrar(juego, layoutGrilla, eventoDeFin, teleportActivado);
+            pantalla.mostrar(juego, layoutGrilla, eventoDeFin);
         });
     }
 
@@ -146,7 +146,7 @@ public class Vista {
     }
 
     public void mostrarPantalla() {
-        pantalla.mostrar(juego, layoutGrilla, eventoDeFin, teleportActivado);
+        pantalla.mostrar(juego, layoutGrilla, eventoDeFin);
     }
 
     public void actualizarEstiloNodos() {
