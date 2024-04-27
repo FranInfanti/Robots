@@ -5,15 +5,15 @@ skinparam classAttributeIconSize 0
 skinparam roundcorner 0
 
 class Juego {
-  - puntos: Int
   - nivelActual: Int
+  - puntos: Puntaje
   - mapa: Mapa
   - jugador: Jugador
   - robots: HashSet<Enemigo>
   - explosiones: HashSet<Enemigo>
-  
+
   <<Create>> constructor(dimensionesDelMapa: Coordenadas): Juego
-  
+
   + moverJugador(coordenadas: Coordenadas): Void
   + teleportJugador(coordenadas: Coordenadas): Void
   + estadoJuego(): Void
@@ -22,9 +22,9 @@ class Juego {
 class Coordenadas {
   - x: Int
   - y: Int
-  
+
   <<Create>> constructor(x: Int, y: Int): Coordenadas
-  
+
   + esIgual(coordenadas: Coordenadas): Boolean
   + calcularDesplazamiento(coordenadas: Coordenadas): Coordenadas
 }
@@ -33,7 +33,7 @@ class Mapa {
   - dimensionesDelMapa: Coordenadas
 
   <<Create>> constructor(dimensionesDelMapa: Coordenadas): Mapa
-  
+
   + generarCoordenadas(aux: Collection<?>, jugador: Jugador): Coordenadas
   + getCentroMapa(): Coordenadas
 }
@@ -41,27 +41,27 @@ class Mapa {
 abstract class Personaje {
   - coordenadas: Coordenadas
   - eliminado: Boolean
-  
+
   <<Create>> constructor(coordenadas: Coordenadas): Personaje
-  
-  + mover(coordenadas: Coordenadas, aux: Collection<?>): abstract Void
+
+  + abstract mover(coordenadas: Coordenadas, aux: Collection<?>): Void
   + getImagen(): abstract String
 }
 
 class Jugador extends Personaje {
   - teleportSeguro: Int
-  
+
   <<Create>> constructor(coordenadas: Coordenadas): Jugador
-  
-  + teleportSeguro(coordenadas: Coordenadas): Boolean
+
+  + teleportSeguro(coordenadas: Coordenadas, teleportsIniciales: Int): Boolean
   + teleportAleatorio(coordenadas: coordenadas): Boolean
 }
 
 abstract class Enemigo extends Personaje {
   <<Create>> constructor(coordenadas: Coordenadas): Enemigo
-  
+
   + isEliminado(enemigos: HashSet<Enemigos>): Boolean
-  + getPuntaje(): abstract Int
+  + abstract getDesplazamiento(): Int
 }
 
 class RobotX1 extends Enemigo {
@@ -78,17 +78,17 @@ class Explosion extends Enemigo {
 
 class Puntaje {
   - puntos: Int
-  
+
   <<Create>> constructor(): Puntaje
-  
+
   + sumarPuntos(puntos: Int): Void
 }
 
 Juego *-- Personaje
 Juego *-- Mapa
-Juego *--Puntaje
+Juego *-- Puntaje
 
 Mapa o-- Coordenadas
-Personaje o-- Coordenadas
+Personaje --- Coordenadas
 
 @enduml

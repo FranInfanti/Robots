@@ -109,9 +109,11 @@ public class Vista {
 
     public Vista(Stage stage) {
         teleportActivado = false;
-        eventoDeFin = new EventoDeFin();
-        pantalla = new Pantalla();
         archivo = new Archivo();
+
+        pantalla = new Pantalla();
+        eventoDeFin = new EventoDeFin();
+
         layoutGeneral = new StackPane();
         layoutInicio = new VBox();
         layoutJuego = new VBox();

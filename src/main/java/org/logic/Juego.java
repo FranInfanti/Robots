@@ -1,7 +1,11 @@
 package org.logic;
 
 import org.logic.personajes.*;
-import java.util.*;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
 
 public class Juego {
     private static final double PORCENTAJE_ROBOTX1 = 0.8;
@@ -10,8 +14,9 @@ public class Juego {
     private static final int NIVEL_INICIAL = 1;
 
     private void agregarRobots() {
-        int cantidadRobotX1 = (int) (mapa.getCantidadEnemigos() * PORCENTAJE_ROBOTX1);
-        int cantidadRobotX2 = (int) (mapa.getCantidadEnemigos() * PORCENTAJE_ROBOTX2);
+        int cantidadEnemigos = (mapa.getDimensionMapa().getX() * mapa.getDimensionMapa().getY()) / ((mapa.getDimensionMapa().getX() + mapa.getDimensionMapa().getY()));
+        int cantidadRobotX1 = (int) (cantidadEnemigos * PORCENTAJE_ROBOTX1);
+        int cantidadRobotX2 = (int) (cantidadEnemigos * PORCENTAJE_ROBOTX2);
 
         for (int i = 0; i < cantidadRobotX1 * nivelActual; i++)
             robots.add(new RobotX1(mapa.generarCoordenada(robots, jugador)));
@@ -46,7 +51,7 @@ public class Juego {
         while (iterator.hasNext()) {
             Enemigo enemigo = iterator.next();
             if (enemigo.getEliminado()) {
-                puntos.sumarPuntos(enemigo.getPuntaje());
+                puntos.sumarPuntos(enemigo.getDesplazamiento() * nivelActual);
                 iterator.remove();
             }
         }

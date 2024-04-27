@@ -44,7 +44,7 @@ public class Archivo {
     }
 
     public String getTextoResultado(int nivel, int puntos) {
-        return ("Llegaste al Nivel %d\n Tu puntaje fue de %d") .formatted(nivel, puntos);
+        return ("Llegaste al Nivel %d\nTu puntaje fue de %d") .formatted(nivel, puntos);
     }
 
     public String getCssDeTitulo() {
@@ -87,5 +87,11 @@ public class Archivo {
 
     public String getImagenJugador() {
         return "jugador.png";
+    }
+
+    public String getImagenEnemigo(int desplazamientoEnemigo) {
+        if (desplazamientoEnemigo == 0)
+            return "explosion.png";
+        return "robotX%d.png".formatted(desplazamientoEnemigo);
     }
 }

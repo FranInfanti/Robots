@@ -62,7 +62,7 @@ public class Pantalla {
         for (int i = 0; i < juego.getCantidadEnemigos(); i++) {
             Enemigo enemigo = juego.getEnemigo(i);
             if (enemigo != null)
-                colocarImagen(getBotonPorPosicion(enemigo.getCoordenadas(), layoutJuego), enemigo.getImagen());
+                colocarImagen(getBotonPorPosicion(enemigo.getCoordenadas(), layoutJuego), archivo.getImagenEnemigo(enemigo.getDesplazamiento()));
         }
     }
 }

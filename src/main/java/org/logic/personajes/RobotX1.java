@@ -1,14 +1,11 @@
 package org.logic.personajes;
 
 import org.logic.Coordenadas;
-
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedList;
 
 public class RobotX1 extends Enemigo {
-    private static final int PUNTAJE = 10;
-    private static final String IMAGEN = "robotX1.png";
+    private static final int DESPLAZAMIENTO = 1;
 
     public RobotX1(Coordenadas coordenadas) {
         super(coordenadas);
@@ -27,12 +24,7 @@ public class RobotX1 extends Enemigo {
     }
 
     @Override
-    public int getPuntaje() {
-        return PUNTAJE;
-    }
-
-    @Override
-    public String getImagen() {
-        return IMAGEN;
+    public int getDesplazamiento() {
+        return DESPLAZAMIENTO;
     }
 }

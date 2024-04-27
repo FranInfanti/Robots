@@ -2,7 +2,6 @@ package org.logic;
 
 import org.logic.personajes.Enemigo;
 import org.logic.personajes.Jugador;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Random;
@@ -31,19 +30,15 @@ public class Mapa {
         this.dimensionMapa = dimensionMapa;
     }
 
-    public Coordenadas generarCoordenada(Collection<?> aux, Jugador jugador) {
+    public Coordenadas generarCoordenada(Collection<?> aux, Object object) {
         Coordenadas aleatorias = new Coordenadas(0,0);
         Random rand = new Random();
 
         do {
             aleatorias.setX(rand.nextInt(dimensionMapa.getX()));
             aleatorias.setY(rand.nextInt(dimensionMapa.getY()));
-        } while (coordenadaOcupada(aleatorias, (HashSet<Enemigo>) aux, jugador));
+        } while (coordenadaOcupada(aleatorias, (HashSet<Enemigo>) aux, (Jugador) object));
         return aleatorias;
-    }
-
-    public int getCantidadEnemigos() {
-        return getDimensionMapa().getX() * getDimensionMapa().getY() / (getDimensionMapa().getX() + getDimensionMapa().getY());
     }
 
     public Coordenadas getCentroMapa() {

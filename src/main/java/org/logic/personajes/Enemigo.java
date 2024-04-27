@@ -1,7 +1,6 @@
 package org.logic.personajes;
 
 import org.logic.Coordenadas;
-
 import java.util.*;
 
 public abstract class Enemigo extends Personaje {
@@ -9,7 +8,9 @@ public abstract class Enemigo extends Personaje {
         super(coordenadas);
     }
 
-    public abstract void mover(Coordenadas coordenadasJugador, Collection<?> aux);
+    public abstract void mover(Coordenadas jugador, Collection<?> aux);
+
+    public abstract int getDesplazamiento();
 
     public void isEliminado(HashSet<Enemigo> enemigos) {
         boolean sigo = true;
@@ -26,6 +27,4 @@ public abstract class Enemigo extends Personaje {
             }
         }
     }
-
-    public abstract int getPuntaje();
 }

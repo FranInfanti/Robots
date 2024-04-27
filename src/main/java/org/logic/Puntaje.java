@@ -7,11 +7,11 @@ public class Puntaje {
         puntos = 0;
     }
 
-    public int getPuntos() {
-        return puntos;
-    }
-
     public void sumarPuntos(int puntos) {
         this.puntos += puntos;
+    }
+
+    public int getPuntos() {
+        return puntos;
     }
 }
