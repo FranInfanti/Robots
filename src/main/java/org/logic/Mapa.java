@@ -9,7 +9,6 @@ import java.util.Random;
 public class Mapa {
     private static final int MITAD = 2;
 
-
     private final Coordenadas dimensionMapa;
 
     public Mapa(Coordenadas dimensionMapa) {
