@@ -17,6 +17,8 @@ public class Vista {
     private void setCssInteractivos() {
         cantidadFilas.setStyle(archivo.getCssSlider());
         cantidadColumnas.setStyle(archivo.getCssSlider());
+        cantidadFilas.setBlockIncrement(Archivo.INCREMENTO_SLIDER);
+        cantidadColumnas.setBlockIncrement(Archivo.INCREMENTO_SLIDER);
         inicioJuego.setStyle(archivo.getCssDeBoton(inicioJuego.isFocused()));
         nuevoJuego.setStyle(archivo.getCssDeBoton(nuevoJuego.isFocused()));
         for (Node nodo : layoutAbajo.getChildren())

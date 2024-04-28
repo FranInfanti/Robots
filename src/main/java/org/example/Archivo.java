@@ -10,6 +10,7 @@ public class Archivo {
     public static final int MAX_FILA = 30;
     public static final int MIN_COLUMNA = 10;
     public static final int MAX_COLUMNA = 30;
+    public static final int INCREMENTO_SLIDER = 5;
     public static final int VISIBLE = 1;
 
     public String getTextoDeTituloJuego() {
@@ -37,7 +38,6 @@ public class Archivo {
     }
 
     public String getTextoDeTeleportSeguros(int teleportsDisponibles) {
-        teleportsDisponibles = 1;
         return "Teleport seguro\n(Quedan: %d)" .formatted(teleportsDisponibles);
     }
 
