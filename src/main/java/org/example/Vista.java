@@ -29,6 +29,8 @@ public class Vista {
     private void setCssLayoutInicio() {
         tituloJuego.setStyle(archivo.getCssDeTitulo());
         layoutInicio.setStyle(archivo.getCssDeVbox());
+        textoCantidadFilas.setStyle(archivo.getCssTextos());
+        textoCantidadColumnas.setStyle(archivo.getCssTextos());
     }
 
     private void setCssLayoutJuego() {
@@ -49,7 +51,7 @@ public class Vista {
     }
 
     private void setLayouts() {
-        layoutInicio.getChildren().addAll(tituloJuego, cantidadFilas, cantidadColumnas, inicioJuego);
+        layoutInicio.getChildren().addAll(tituloJuego, textoCantidadFilas, cantidadFilas, textoCantidadColumnas, cantidadColumnas, inicioJuego);
         layoutJuego.getChildren().addAll(layoutArriba, layoutGrilla, layoutAbajo);
         layoutArriba.getChildren().addAll(nuevoJuego, instrucciones);
         layoutAbajo.getChildren().addAll(teleportRandom, teleportSeguro, waitForRobots);
@@ -78,8 +80,8 @@ public class Vista {
 
     private int getSizeBoton(Coordenadas dimensionesMapa) {
         if (dimensionesMapa.getX() > dimensionesMapa.getY())
-            return Archivo.ANCHO_GRILLA / dimensionesMapa.getX();
-        return Archivo.ALTO_GRILLA / dimensionesMapa.getY();
+            return Archivo.ANCHO_GRILLA / dimensionesMapa.getX() - Archivo.ESPACIO_CASILLAS;
+        return Archivo.ALTO_GRILLA / dimensionesMapa.getY() - Archivo.ESPACIO_CASILLAS;
     }
 
     private final Pantalla pantalla;
@@ -105,6 +107,8 @@ public class Vista {
 
     private final Slider cantidadColumnas;
     private final Slider cantidadFilas;
+    private final Label textoCantidadFilas;
+    private final Label textoCantidadColumnas;
     private final Label instrucciones;
 
     public Vista(Stage stage) {
@@ -123,6 +127,8 @@ public class Vista {
 
         cantidadFilas = new Slider(Archivo.MIN_FILA, Archivo.MAX_FILA, Archivo.MIN_FILA);
         cantidadColumnas = new Slider(Archivo.MIN_COLUMNA, Archivo.MAX_COLUMNA, Archivo.MIN_COLUMNA);
+        textoCantidadFilas =  new Label(archivo.getTextoCantidadFilas());
+        textoCantidadColumnas =  new Label(archivo.getTextoCantidadColumnas());
         instrucciones =  new Label(archivo.getInstrucciones());
         tituloJuego = new Label(archivo.getTextoDeTituloJuego());
         inicioJuego = new Button(archivo.getTextoDeInicioJuego());

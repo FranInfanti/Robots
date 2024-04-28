@@ -5,6 +5,7 @@ public class Archivo {
     public static final int ANCHO_SCENE = 650;
     public static final int ALTO_GRILLA = 400;
     public static final int ANCHO_GRILLA = 400;
+    public static final int ESPACIO_CASILLAS = 3;
     public static final int MIN_FILA = 10;
     public static final int MAX_FILA = 30;
     public static final int MIN_COLUMNA = 10;
@@ -23,20 +24,28 @@ public class Archivo {
         return "Nuevo Juego";
     }
 
+    public String getTextoCantidadFilas() {
+        return "Cantidad de Filas: ";
+    }
+
+    public String getTextoCantidadColumnas() {
+        return "Cantidad de Columnas: ";
+    }
+
     public String getTextoDeTeleportRandom() {
-        return "Teleport Random";
+        return "Teletransporte\naleatorio";
     }
 
     public String getInstrucciones() {
-        return "Seleccione la casilla para la direccion donde quiera ir \nhaciendo clic con el MOUSE o con {<,^,v,>} y presionando ENTER";
+        return "Seleccione la casilla para la direccion donde quiera ir\nhaciendo clic con el MOUSE o con {<,^,v,>} y presionando ENTER";
     }
 
     public String getTextoDeTeleportSafely(int teleportsDisponibles) {
-        return "Teleport Safely\n  (Remaining: %d)" .formatted(teleportsDisponibles);
+        return "Teletransporte seguro\n(Quedan: %d)" .formatted(teleportsDisponibles);
     }
 
     public String getTextoDeWaitForRobots() {
-        return "Wait for robots";
+        return "Esperar";
     }
 
     public String getTextoAlertaFinal() {
@@ -52,12 +61,12 @@ public class Archivo {
     }
 
     public String getCssTextos() {
-        return "-fx-font-family: Arial; -fx-font-weight: 900; -fx-font-size: 12; -fx-text-fill: #aaccffff; -fx-text-alignment: center";
+        return "-fx-font-family: Arial; -fx-font-weight: 900; -fx-font-size: 14; -fx-text-fill: #aaccffff; -fx-text-alignment: center";
     }
 
     public String getCssDeBoton(boolean seleccionado) {
         String color = seleccionado ? "#0044aaff" : "#003380ff";
-        return "-fx-font-family: Arial; -fx-font-weight: 900; -fx-text-fill: #aaccffff; -fx-font-size: 20; -fx-background-color: %s;  -fx-background-radius: 20; -fx-min-width: 200; -fx-min-height: 65" .formatted(color);
+        return "-fx-text-alignment: CENTER; -fx-font-family: Arial; -fx-font-weight: 900; -fx-text-fill: #aaccffff; -fx-font-size: 20; -fx-background-color: %s;  -fx-background-radius: 20; -fx-min-width: 200; -fx-min-height: 65" .formatted(color);
     }
 
     public String getCssSlider() {
@@ -82,7 +91,7 @@ public class Archivo {
     }
 
     public String getCssDeGridPane(int minWidth, int minHeight) {
-        return "-fx-alignment: CENTER; -fx-background-color: #002255ff; -fx-hgap: 3; -fx-vgap: 3; -fx-min-width: %d; -fx-min-height: %d" .formatted(minWidth, minHeight);
+        return "-fx-alignment: CENTER; -fx-background-color: #002255ff; -fx-hgap: 3; -fx-vgap:3; -fx-min-width: %d; -fx-min-height: %d" .formatted(minWidth, minHeight);
     }
 
     public String getImagenJugador() {
