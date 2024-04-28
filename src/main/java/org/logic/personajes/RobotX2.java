@@ -7,8 +7,10 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 public class RobotX2 extends Enemigo {
+    private static final int DESPLAZAMIENTO_ROBOTX2 = 2;
+
     public RobotX2(Coordenadas coordenadas) {
-        super(coordenadas, 2);
+        super(coordenadas, DESPLAZAMIENTO_ROBOTX2);
     }
 
     @Override

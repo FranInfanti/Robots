@@ -5,9 +5,10 @@ import java.util.Collection;
 import java.util.HashSet;
 
 public class RobotX1 extends Enemigo {
+    private static final int DESPLAZAMIENTO_ROBOTX1 = 1;
 
     public RobotX1(Coordenadas coordenadas) {
-        super(coordenadas, 1);
+        super(coordenadas, DESPLAZAMIENTO_ROBOTX1);
     }
 
     @Override

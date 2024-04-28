@@ -11,8 +11,6 @@ public abstract class Enemigo extends Personaje {
         this.desplazamiento = desplazamiento;
     }
 
-    public abstract void mover(Coordenadas jugador, Collection<?> aux);
-
     public int getDesplazamiento(){
         return desplazamiento;
     }

@@ -3,17 +3,19 @@
 namespace Logica {
     class Juego {
         - nivelActual: Int
-        - puntos: Puntaje
-        - mapa: Mapa
-        - jugador: Jugador
-        - robots: HashSet<Enemigo>
-        - explosiones: HashSet<Enemigo>
 
         <<Create>> constructor(dimensionesDelMapa: Coordenadas): Juego
 
+        - avanzarNivel(): Void
+        - jugadorEliminado(HashSet<Enemigo> enemigos): Void
+        - eliminarRobots(): Void
+        - agregarRobots(): Void
+        - agregarExplosion(Coordenadas coordenadas): Void
+        - moverEnemigos(): Void
         + moverJugador(coordenadas: Coordenadas): Void
         + teleportJugador(coordenadas: Coordenadas): Void
         + estadoJuego(): Void
+
     }
 
     class Coordenadas {
@@ -27,47 +29,47 @@ namespace Logica {
     }
 
     class Mapa {
-        - dimensionesDelMapa: Coordenadas
-
         <<Create>> constructor(dimensionesDelMapa: Coordenadas): Mapa
 
+        - coordenadaOcupada(Coordenadas coordenada, HashSet<Enemigo> enemigos, Jugador jugador): boolean
         + generarCoordenadas(aux: Collection<?>, jugador: Jugador): Coordenadas
         + getCentroMapa(): Coordenadas
     }
 
     namespace Personajes {
         abstract class Personaje {
-            - coordenadas: Coordenadas
             - eliminado: Boolean
 
             <<Create>> constructor(coordenadas: Coordenadas): Personaje
 
             {abstract} + mover(coordenadas: Coordenadas, aux: Collection<?>): Void
-            + getImagen(): abstract String
         }
 
         class Jugador extends Personaje {
             - teleportSeguro: Int
 
-            <<Create>> constructor(coordenadas: Coordenadas): Jugador
+            <<Create>> constructor(coordenadas: Coordenadas, int teleportsIniciales): Jugador
 
+            + mover(coordenadas: Coordenadas, aux: Collection<?>): Void
             + teleportSeguro(coordenadas: Coordenadas, teleportsIniciales: Int): Boolean
             + teleportAleatorio(coordenadas: coordenadas): Boolean
         }
 
         abstract class Enemigo extends Personaje {
-            <<Create>> constructor(coordenadas: Coordenadas): Enemigo
+            - desplazamiento: int
+            <<Create>> constructor(coordenadas: Coordenadas, int desplazamiento): Enemigo
 
             + isEliminado(enemigos: HashSet<Enemigos>): Boolean
-            {abstract} + getDesplazamiento(): Int
         }
 
         class RobotX1 extends Enemigo {
             <<Create>> constructor(coordenadas: Coordenadas): RobotX1
+            + mover(coordenadas: Coordenadas, aux: Collection<?>): Void
         }
 
         class RobotX2 extends Enemigo {
             <<Create>> constructor(coordenadas: Coordenadas): RobotX2
+            + mover(coordenadas: Coordenadas, aux: Collection<?>): Void
         }
 
         class Explosion extends Enemigo {
@@ -84,11 +86,13 @@ namespace Logica {
         + sumarPuntos(puntos: Int): Void
     }
 
-    Juego *-- Personaje
-    Juego *-- Mapa
-    Juego *-- Puntaje
+    Juego *-- Jugador : "jugador"
+    Juego *-- Enemigo : "robots"
+    Juego *-- Explosion : "explosiones"
+    Juego *-- Mapa : "mapa"
+    Juego *-- Puntaje : "puntos"
 
-    Mapa o-- Coordenadas
-    Personaje o-- Coordenadas
+    Mapa o-- Coordenadas : "dimensionesDelMapa"
+    Personaje o-- Coordenadas : "coordenadas"
 }
 @enduml

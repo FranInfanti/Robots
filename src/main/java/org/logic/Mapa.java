@@ -9,6 +9,13 @@ import java.util.Random;
 public class Mapa {
     private static final int MITAD = 2;
 
+
+    private final Coordenadas dimensionMapa;
+
+    public Mapa(Coordenadas dimensionMapa) {
+        this.dimensionMapa = dimensionMapa;
+    }
+
     private boolean coordenadaOcupada(Coordenadas coordenada, HashSet<Enemigo> enemigos, Jugador jugador) {
         if (enemigos == null || jugador == null)
             return false;
@@ -22,12 +29,6 @@ public class Mapa {
                 ocupada = true;
         }
         return ocupada;
-    }
-
-    private final Coordenadas dimensionMapa;
-
-    public Mapa(Coordenadas dimensionMapa) {
-        this.dimensionMapa = dimensionMapa;
     }
 
     public Coordenadas generarCoordenada(Collection<?> aux, Object object) {
