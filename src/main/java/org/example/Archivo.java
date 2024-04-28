@@ -32,20 +32,21 @@ public class Archivo {
         return "Cantidad de Columnas: ";
     }
 
-    public String getTextoDeTeleportRandom() {
-        return "Teletransporte\naleatorio";
+    public String getTextoDeTeleportAleatorio() {
+        return "Teleport\naleatorio";
+    }
+
+    public String getTextoDeTeleportSeguros(int teleportsDisponibles) {
+        teleportsDisponibles = 1;
+        return "Teleport seguro\n(Quedan: %d)" .formatted(teleportsDisponibles);
+    }
+
+    public String getTextoEsperarRobots() {
+        return "Esperar";
     }
 
     public String getInstrucciones() {
         return "Seleccione la casilla para la direccion donde quiera ir\nhaciendo clic con el MOUSE o con {<,^,v,>} y presionando ENTER";
-    }
-
-    public String getTextoDeTeleportSafely(int teleportsDisponibles) {
-        return "Teletransporte seguro\n(Quedan: %d)" .formatted(teleportsDisponibles);
-    }
-
-    public String getTextoDeWaitForRobots() {
-        return "Esperar";
     }
 
     public String getTextoAlertaFinal() {

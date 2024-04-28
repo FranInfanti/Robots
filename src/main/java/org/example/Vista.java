@@ -133,9 +133,9 @@ public class Vista {
         tituloJuego = new Label(archivo.getTextoDeTituloJuego());
         inicioJuego = new Button(archivo.getTextoDeInicioJuego());
         nuevoJuego = new Button(archivo.getTextoDeNuevoJuego());
-        teleportRandom = new Button(archivo.getTextoDeTeleportRandom());
+        teleportRandom = new Button(archivo.getTextoDeTeleportAleatorio());
         teleportSeguro = new Button();
-        waitForRobots = new Button(archivo.getTextoDeWaitForRobots());
+        waitForRobots = new Button(archivo.getTextoEsperarRobots());
 
         setLayouts();
 
@@ -184,7 +184,7 @@ public class Vista {
     }
 
     public void setTeleportSeguro(int cantidad) {
-        teleportSeguro.setText(archivo.getTextoDeTeleportSafely(cantidad));
+        teleportSeguro.setText(archivo.getTextoDeTeleportSeguros(cantidad));
     }
 
     public void setTeleportActivado(boolean teleportActivado) {

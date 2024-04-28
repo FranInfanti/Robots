@@ -1,7 +1,6 @@
 package org.logic;
 
 import org.logic.personajes.*;
-
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -12,6 +11,7 @@ public class Juego {
     private static final double PORCENTAJE_ROBOTX2 = 0.2;
     private static final int TELEPORTS_SEGUROS_DISPONIBLES = 1;
     private static final int NIVEL_INICIAL = 1;
+    private static final int POTENCIADOR = 10;
 
     private void agregarRobots() {
         int cantidadEnemigos = (mapa.getDimensionMapa().getX() * mapa.getDimensionMapa().getY()) / ((mapa.getDimensionMapa().getX() + mapa.getDimensionMapa().getY()));
@@ -47,11 +47,13 @@ public class Juego {
     }
 
     private void eliminarRobots() {
+        int potenciador = POTENCIADOR * nivelActual;
+
         Iterator<Enemigo> iterator = robots.iterator();
         while (iterator.hasNext()) {
             Enemigo enemigo = iterator.next();
             if (enemigo.getEliminado()) {
-                puntos.sumarPuntos(enemigo.getDesplazamiento() * nivelActual);
+                puntos.sumarPuntos(enemigo.getDesplazamiento() * potenciador);
                 iterator.remove();
             }
         }
