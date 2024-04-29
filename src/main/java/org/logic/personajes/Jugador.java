@@ -34,7 +34,7 @@ public class Jugador extends Personaje {
     }
 
     public void setTeleportsSeguros(int teleportSeguros) {
-        this.teleportSeguros = teleportSeguros;
+        this.teleportSeguros += teleportSeguros;
     }
 
     public int getTeleportsSeguros() {

@@ -5,14 +5,6 @@ import org.logic.Coordenadas;
 import org.logic.Juego;
 
 public class Controlador {
-    private void fireAlerta() {
-        var alerta = new Alert(Alert.AlertType.WARNING);
-        alerta.setTitle(archivo.getTextoDeTituloJuego());
-        alerta.setContentText(archivo.getTextoResultado(juego.getNivel(), juego.getPuntos()));
-        alerta.setHeaderText(archivo.getTextoAlertaFinal());
-        alerta.show();
-    }
-
     private Juego juego;
     private final Vista vista;
     private final Archivo archivo;
@@ -20,6 +12,14 @@ public class Controlador {
     public Controlador(Vista vista) {
         this.vista = vista;
         archivo = new Archivo();
+    }
+
+    private void fireAlerta() {
+        var alerta = new Alert(Alert.AlertType.WARNING);
+        alerta.setTitle(archivo.getTextoDeTituloJuego());
+        alerta.setContentText(archivo.getTextoResultado(juego.getNivel(), juego.getPuntos()));
+        alerta.setHeaderText(archivo.getTextoAlertaFinal());
+        alerta.show();
     }
 
     public void iniciar() {
@@ -33,11 +33,9 @@ public class Controlador {
         vista.setListenerNuevoJuego(_ -> vista.iniciarJuego());
 
         vista.setListenerInicioJuego(_ -> {
-            vista.setTeleportActivado(false);
             vista.setMenuInicio(false);
             juego = new Juego(new Coordenadas(vista.getCantidadColumnas(), vista.getCantidadFilas()));
             vista.setJuego(juego);
-            vista.setGrillaLayoutJuego();
             vista.mostrarPantalla();
         });
 
@@ -51,7 +49,6 @@ public class Controlador {
         vista.setListenerTeleportSeguro(_ -> {
             if (!juego.getJugadorEliminado())
                 vista.setTeleportActivado(true);
-            vista.mostrarPantalla();
         });
 
         vista.setListenerWaitForRobots(_ -> {

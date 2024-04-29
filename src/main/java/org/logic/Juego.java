@@ -44,13 +44,11 @@ public class Juego {
     }
 
     private void eliminarRobots() {
-        int potenciador = POTENCIADOR * nivelActual;
-
         Iterator<Enemigo> iterator = robots.iterator();
         while (iterator.hasNext()) {
             Enemigo enemigo = iterator.next();
             if (enemigo.getEliminado()) {
-                puntos.sumarPuntos(enemigo.getDesplazamiento() * potenciador);
+                puntos.sumarPuntos(enemigo.getDesplazamiento() * POTENCIADOR * nivelActual);
                 iterator.remove();
             }
         }
@@ -112,6 +110,24 @@ public class Juego {
             avanzarNivel();
     }
 
+    public Coordenadas getCoordenadasJugador() {
+        return jugador.getCoordenadas();
+    }
+
+    public Enemigo getEnemigo(int index) {
+        if (index > getCantidadEnemigos())
+            return null;
+
+        LinkedList<Enemigo> enemigos = new LinkedList<>();
+        enemigos.addAll(explosiones);
+        enemigos.addAll(robots);
+        return enemigos.get(index);
+    }
+
+    public Coordenadas getDimensionesMapa() {
+        return mapa.getDimensionMapa();
+    }
+
     public int getNivel() {
         return nivelActual;
     }
@@ -130,23 +146,5 @@ public class Juego {
 
     public int getCantidadEnemigos() {
         return explosiones.size() + robots.size();
-    }
-
-    public Enemigo getEnemigo(int index) {
-        if (index > getCantidadEnemigos())
-            return null;
-
-        LinkedList<Enemigo> enemigos = new LinkedList<>();
-        enemigos.addAll(explosiones);
-        enemigos.addAll(robots);
-        return enemigos.get(index);
-    }
-
-    public Coordenadas getDimensionesMapa() {
-        return mapa.getDimensionMapa();
-    }
-
-    public Coordenadas getCoordenadasJugador() {
-        return jugador.getCoordenadas();
     }
 }

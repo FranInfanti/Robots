@@ -11,6 +11,11 @@ import org.logic.Juego;
 import org.logic.personajes.*;
 
 public class Pantalla {
+    private final Archivo archivo;
+
+    public Pantalla() {
+        archivo = new Archivo();
+    }
 
     private void setEstiloCasilla(GridPane layoutJuego) {
         for (Node nodo : layoutJuego.getChildren()) {
@@ -28,18 +33,12 @@ public class Pantalla {
         boton.setGraphic(imageView);
     }
 
-    private Button getBotonPorPosicion(Coordenadas posicion, GridPane gridPane) {
+    private Button getBotonPorPosicion(Coordenadas posicion, GridPane layoutJuego) {
         Button buscado = null;
-        ObservableList<Node> botones = gridPane.getChildren();
+        ObservableList<Node> botones = layoutJuego.getChildren();
         for (Node boton : botones)
             if (posicion.esIgual(new Coordenadas(GridPane.getColumnIndex(boton), GridPane.getRowIndex(boton)))) buscado = (Button) boton;
         return buscado;
-    }
-
-    private final Archivo archivo;
-
-    public Pantalla() {
-        archivo = new Archivo();
     }
 
     public void mostrar(Juego juego, GridPane layoutJuego, EventoDeFin eventoDeFin) {

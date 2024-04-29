@@ -14,10 +14,6 @@ public class Coordenadas {
         this.y = y;
     }
 
-    public boolean esIgual(Coordenadas coordenadas){
-        return this.getX() == coordenadas.getX() && this.getY() == coordenadas.getY();
-    }
-
     public Coordenadas calcularDesplazamiento(Coordenadas coordenadas) {
         Coordenadas resultado = new Coordenadas(0,0);
         if (x - coordenadas.getX() > 0)
@@ -33,6 +29,10 @@ public class Coordenadas {
             resultado.setY(ABAJO);
 
         return resultado;
+    }
+
+    public boolean esIgual(Coordenadas coordenadas){
+        return this.getX() == coordenadas.getX() && this.getY() == coordenadas.getY();
     }
 
     public void setX(int x) {

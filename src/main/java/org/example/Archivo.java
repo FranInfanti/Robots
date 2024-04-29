@@ -26,11 +26,11 @@ public class Archivo {
     }
 
     public String getTextoCantidadFilas() {
-        return "Cantidad de Filas: ";
+        return "Cantidad de Filas:";
     }
 
     public String getTextoCantidadColumnas() {
-        return "Cantidad de Columnas: ";
+        return "Cantidad de Columnas:";
     }
 
     public String getTextoDeTeleportAleatorio() {

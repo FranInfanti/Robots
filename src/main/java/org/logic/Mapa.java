@@ -33,7 +33,6 @@ public class Mapa {
     public Coordenadas generarCoordenada(Collection<?> aux, Object object) {
         Coordenadas aleatorias = new Coordenadas(0,0);
         Random rand = new Random();
-
         do {
             aleatorias.setX(rand.nextInt(dimensionMapa.getX()));
             aleatorias.setY(rand.nextInt(dimensionMapa.getY()));
