@@ -88,12 +88,13 @@ namespace Logica {
         + sumarPuntos(puntos: Int): Void
     }
 
-    Juego *-- "1" Jugador : jugador
-    Juego *-- "n" Enemigo : robots
-    Juego *-- "n" Explosion : explosiones
-    Juego *-- "1" Mapa : mapa
-    Juego *-- "1" Puntaje : puntos
-    Mapa o-- "1" Coordenadas : coordenadas
-    Personaje -- "1" Coordenadas : coordendas
+    Juego "1" *-- "1" Jugador : jugador
+    Juego "1" *-- "n" RobotX1 : robots
+    Juego "1" *-- "n" RobotX2 : robots
+    Juego "1" *-- "n" Explosion : explosiones
+    Juego "1" *-- "1" Mapa : mapa
+    Juego "1" *-- "1" Puntaje : puntos
+    Mapa "1" o-- "1" Coordenadas : coordenadas
+    Personaje "n" -- "1" Coordenadas : coordendas
 }
 @enduml
