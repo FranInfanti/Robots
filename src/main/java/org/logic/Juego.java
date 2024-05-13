@@ -1,14 +1,35 @@
 package org.logic;
 
 import org.logic.personajes.*;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
 public class Juego {
-    private static final int CANTIDAD_ROBOTX1_INICIAL = 8;
-    private static final int CANTIDAD_ROBOTX2_INICIAL = 2;
+    private static final double PORCENTAJE_ROBOTX1 = 0.8;
+    private static final double PORCENTAJE_ROBOTX2 = 0.2;
     private static final int TELEPORTS_SEGUROS_DISPONIBLES = 1;
+    private static final int NIVEL_INICIAL = 1;
+    private static final int POTENCIADOR = 10;
+
+    private int nivelActual;
+    private final Puntaje puntos;
+    private final Mapa mapa;
+
+    public final Jugador jugador;
+    public final HashSet<Enemigo> robots;
+    public final HashSet<Explosion> explosiones;
+
+    public Juego(Coordenadas dimensionesMapa) {
+        nivelActual = NIVEL_INICIAL;
+        puntos = new Puntaje();
+        mapa = new Mapa(dimensionesMapa);
+        jugador = new Jugador(mapa.getCentroMapa(), TELEPORTS_SEGUROS_DISPONIBLES);
+        robots = new LinkedHashSet<>();
+        explosiones = new LinkedHashSet<>();
+        agregarRobots();
+    }
 
     private void avanzarNivel() {
         nivelActual++;
@@ -17,66 +38,55 @@ public class Juego {
         agregarRobots();
     }
 
-    private void jugadorEliminado(LinkedList<Enemigo> enemigos) {
-        for (Enemigo enemigo : enemigos) {
-            if (jugador.getCoordenadas().esIgual(enemigo.getCoordenadas()))
-                jugador.setEliminado(true);
+    private void jugadorEliminado(HashSet<Enemigo> enemigos) {
+        for (Enemigo enemigo : enemigos)
+            if (jugador.getCoordenadas().esIgual(enemigo.getCoordenadas())) jugador.setEliminado(true);
+    }
+
+    private void eliminarRobots() {
+        Iterator<Enemigo> iterator = robots.iterator();
+        while (iterator.hasNext()) {
+            Enemigo enemigo = iterator.next();
+            if (enemigo.getEliminado()) {
+                puntos.sumarPuntos(enemigo.getDesplazamiento() * POTENCIADOR * nivelActual);
+                iterator.remove();
+            }
         }
+    }
+
+    private void agregarRobots() {
+        int cantidadEnemigos = (mapa.getDimensionMapa().getX() * mapa.getDimensionMapa().getY()) / ((mapa.getDimensionMapa().getX() + mapa.getDimensionMapa().getY()));
+        int cantidadRobotX1 = (int) (cantidadEnemigos * PORCENTAJE_ROBOTX1);
+        int cantidadRobotX2 = (int) (cantidadEnemigos * PORCENTAJE_ROBOTX2);
+
+        for (int i = 0; i < cantidadRobotX1 * nivelActual; i++)
+            robots.add(new RobotX1(mapa.generarCoordenada(robots, jugador)));
+
+        for (int i = 0; i < cantidadRobotX2 * nivelActual; i++)
+            robots.add(new RobotX2(mapa.generarCoordenada(robots, jugador)));
     }
 
     private void agregarExplosion(Coordenadas coordenadas) {
         boolean coordenadaExiste = false;
-        Iterator<Enemigo> iterator = explosiones.iterator();
-        while (iterator.hasNext() && !coordenadaExiste) {
-            Enemigo actual = iterator.next();
-            if (actual.getCoordenadas().esIgual(coordenadas))
-                coordenadaExiste = true;
-        }
+        for (Enemigo explosion : explosiones)
+            if (explosion.getCoordenadas().esIgual(coordenadas)) coordenadaExiste = true;
 
         if (!coordenadaExiste)
             explosiones.add(new Explosion(coordenadas));
     }
 
-    private void eliminarRobots() {
-        robots.removeIf(Personaje::getEliminado);
-    }
-
     private void moverEnemigos() {
-        LinkedList<Enemigo> enemigos = new LinkedList<>();
+        HashSet<Enemigo> enemigos = new LinkedHashSet<>();
         enemigos.addAll(explosiones);
         enemigos.addAll(robots);
 
         for (Enemigo actual : robots) {
             actual.mover(jugador.getCoordenadas(), enemigos);
-            if (actual.getEliminado())
-                agregarExplosion(actual.getCoordenadas());
+            if (actual.getEliminado()) agregarExplosion(actual.getCoordenadas());
         }
 
         jugadorEliminado(enemigos);
         eliminarRobots();
-    }
-
-    private int nivelActual;
-    private final Mapa mapa;
-
-    public final Jugador jugador;
-    public final LinkedList<Enemigo> robots;
-    public final LinkedList<Enemigo> explosiones;
-
-    public Juego(Coordenadas dimensionesMapa) {
-        nivelActual = 1;
-        mapa = new Mapa(dimensionesMapa);
-        jugador = new Jugador(mapa.getCentroMapa(), TELEPORTS_SEGUROS_DISPONIBLES);
-        robots = new LinkedList<>();
-        explosiones = new LinkedList<>();
-    }
-
-    public void agregarRobots() {
-        for (int i = 0; i < CANTIDAD_ROBOTX1_INICIAL * nivelActual; i++)
-            robots.add(new RobotX1(mapa.generarCoordenada(robots)));
-
-        for (int i = 0; i < CANTIDAD_ROBOTX2_INICIAL * nivelActual; i++)
-            robots.add(new RobotX2(mapa.generarCoordenada(robots)));
     }
 
     public void moverJugador(Coordenadas coordenadas) {
@@ -85,12 +95,14 @@ public class Juego {
     }
 
     public void teleportJugador(Coordenadas coordenadas) {
+        boolean teleportRealizado;
         if (coordenadas != null)
-            jugador.teleportSeguro(coordenadas);
+            teleportRealizado = jugador.teleportSeguro(coordenadas);
         else
-            jugador.teleportAleatorio(mapa.generarCoordenada(null));
+            teleportRealizado = jugador.teleportAleatorio(mapa.generarCoordenada(null,null));
 
-        moverEnemigos();
+        if (teleportRealizado)
+            moverEnemigos();
     }
 
     public void estadoJuego() {
@@ -98,12 +110,8 @@ public class Juego {
             avanzarNivel();
     }
 
-    public boolean getJugadorEliminado() {
-        return jugador.getEliminado();
-    }
-
-    public int getCantidadEnemigos() {
-        return explosiones.size() + robots.size();
+    public Coordenadas getCoordenadasJugador() {
+        return jugador.getCoordenadas();
     }
 
     public Enemigo getEnemigo(int index) {
@@ -120,18 +128,23 @@ public class Juego {
         return mapa.getDimensionMapa();
     }
 
-    public Coordenadas getCoordenadasJugador() {
-        return jugador.getCoordenadas();
+    public int getNivel() {
+        return nivelActual;
     }
 
-    public void borrar() {
-        ArrayList<Enemigo> enemigos = new ArrayList<>();
-        enemigos.addAll(explosiones);
-        enemigos.addAll(robots);
+    public int getPuntos() {
+        return puntos.getPuntos();
+    }
 
-        for (Enemigo enemigo : enemigos) {
-            System.out.println(enemigo.getClass() +  ": (%d, %d)" .formatted(enemigo.getCoordenadas().getX(), enemigo.getCoordenadas().getY()));
-        }
-        System.out.println("Jugador (%d, %d)" .formatted(jugador.getCoordenadas().getX(), jugador.getCoordenadas().getY()));
+    public int getTeleportsDisponibles() {
+        return jugador.getTeleportsSeguros();
+    }
+
+    public boolean getJugadorEliminado() {
+        return jugador.getEliminado();
+    }
+
+    public int getCantidadEnemigos() {
+        return explosiones.size() + robots.size();
     }
 }

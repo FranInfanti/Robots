@@ -1,7 +1,7 @@
 package org.logic.personajes;
 
 import org.logic.Coordenadas;
-import java.util.LinkedList;
+import java.util.Collection;
 
 public abstract class Personaje {
     private Coordenadas coordenadas;
@@ -12,9 +12,7 @@ public abstract class Personaje {
         eliminado = false;
     }
 
-    public abstract void mover(Coordenadas coordenadasJugador, LinkedList<?> aux);
-
-    //public abstract void isEliminado(LinkedList<Enemigo> enemigos);
+    public abstract void mover(Coordenadas coordenadasJugador, Collection<?> aux);
 
     public void setEliminado(boolean eliminado) {
         this.eliminado = eliminado;

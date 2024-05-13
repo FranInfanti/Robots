@@ -1,51 +1,43 @@
 package org.logic.personajes;
 
 import org.logic.Coordenadas;
-import java.util.LinkedList;
+import java.util.Collection;
 
 public class Jugador extends Personaje {
-    private int teleportsSeguros;
+    private int teleportSeguros;
 
-    public Jugador(Coordenadas coordenadas, int teleportsDisponibles) {
+    public Jugador(Coordenadas coordenadas, int teleportsIniciales) {
         super(coordenadas);
-        this.teleportsSeguros = teleportsDisponibles;
+        this.teleportSeguros = teleportsIniciales;
     }
 
     @Override
-    public void mover(Coordenadas coordenadas, LinkedList<?> aux) {
+    public void mover(Coordenadas coordenadas, Collection<?> aux) {
         Coordenadas distanciaMover = getCoordenadas().calcularDesplazamiento(coordenadas);
         int x = distanciaMover.getX() + getCoordenadas().getX();
         int y = distanciaMover.getY() + getCoordenadas().getY();
         setCoordenadas(new Coordenadas(x,y));
     }
 
-    /*
-    @Override
-    public void isEliminado(LinkedList<Enemigo> enemigos) {
-        for (Enemigo enemigo : enemigos) {
-            if (getCoordenadas().esIgual(enemigo.getCoordenadas()))
-                setEliminado(true);
-        }
-    }
-    */
-
-    public void teleportSeguro(Coordenadas coordenadas) {
-        if (teleportsSeguros == 0)
-            return;
+    public boolean teleportSeguro(Coordenadas coordenadas) {
+        if (teleportSeguros == 0)
+            return false;
 
         setCoordenadas(coordenadas);
-        teleportsSeguros--;
+        teleportSeguros--;
+        return true;
     }
 
-    public void teleportAleatorio(Coordenadas coordenadas) {
+    public boolean teleportAleatorio(Coordenadas coordenadas) {
         setCoordenadas(coordenadas);
+        return true;
     }
 
-    public void setTeleportsSeguros(int teleportsSeguros) {
-        this.teleportsSeguros = teleportsSeguros;
+    public void setTeleportsSeguros(int teleportSeguros) {
+        this.teleportSeguros += teleportSeguros;
     }
 
     public int getTeleportsSeguros() {
-        return teleportsSeguros;
+        return teleportSeguros;
     }
 }

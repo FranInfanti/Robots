@@ -1,45 +1,47 @@
 package org.logic;
 
 import org.logic.personajes.Enemigo;
-import java.util.LinkedList;
+import org.logic.personajes.Jugador;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Random;
 
 public class Mapa {
-    private boolean coordenadaOcupada(Coordenadas coordenada, LinkedList<Enemigo> enemigos) {
-        if (enemigos == null)
+    private static final int MITAD = 2;
+
+    private final Coordenadas dimensionMapa;
+
+    public Mapa(Coordenadas dimensionMapa) {
+        this.dimensionMapa = dimensionMapa;
+    }
+
+    private boolean coordenadaOcupada(Coordenadas coordenada, HashSet<Enemigo> enemigos, Jugador jugador) {
+        if (enemigos == null || jugador == null)
             return false;
+
+        if (coordenada.esIgual(jugador.getCoordenadas()))
+            return true;
 
         boolean ocupada = false;
         for (Enemigo enemigo : enemigos) {
-            if (coordenada.esIgual(enemigo.getCoordenadas()) || coordenada.esIgual(getCentroMapa()))
+            if (coordenada.esIgual(enemigo.getCoordenadas()))
                 ocupada = true;
         }
         return ocupada;
     }
 
-    private Coordenadas dimensionMapa;
-    private final Random rand;
-
-    public Mapa(Coordenadas dimensionMapa) {
-        this.dimensionMapa = dimensionMapa;
-        rand = new Random();
-    }
-
-    public Coordenadas generarCoordenada(LinkedList<Enemigo> enemigos) {
+    public Coordenadas generarCoordenada(Collection<?> aux, Object object) {
         Coordenadas aleatorias = new Coordenadas(0,0);
+        Random rand = new Random();
         do {
             aleatorias.setX(rand.nextInt(dimensionMapa.getX()));
             aleatorias.setY(rand.nextInt(dimensionMapa.getY()));
-        } while (coordenadaOcupada(aleatorias, enemigos));
+        } while (coordenadaOcupada(aleatorias, (HashSet<Enemigo>) aux, (Jugador) object));
         return aleatorias;
     }
 
-    public void setDimensionMapa(Coordenadas dimensionMapa) {
-        this.dimensionMapa = dimensionMapa;
-    }
-
     public Coordenadas getCentroMapa() {
-        return new Coordenadas(dimensionMapa.getX() / 2, dimensionMapa.getY() / 2);
+        return new Coordenadas(dimensionMapa.getX() / MITAD, dimensionMapa.getY() / MITAD);
     }
 
     public Coordenadas getDimensionMapa() {

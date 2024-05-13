@@ -1,15 +1,18 @@
 package org.logic.personajes;
 
 import org.logic.Coordenadas;
-import java.util.LinkedList;
+import java.util.Collection;
+import java.util.HashSet;
 
 public class RobotX1 extends Enemigo {
+    private static final int DESPLAZAMIENTO_ROBOTX1 = 1;
+
     public RobotX1(Coordenadas coordenadas) {
-        super(coordenadas);
+        super(coordenadas, DESPLAZAMIENTO_ROBOTX1);
     }
 
     @Override
-    public void mover(Coordenadas coordenadasJugador, LinkedList<?> aux) {
+    public void mover(Coordenadas coordenadasJugador, Collection<?> aux) {
         if (this.getEliminado())
             return;
 
@@ -17,6 +20,6 @@ public class RobotX1 extends Enemigo {
         int x = distanciaMover.getX() + getCoordenadas().getX();
         int y = distanciaMover.getY() + getCoordenadas().getY();
         setCoordenadas(new Coordenadas(x,y));
-        this.isEliminado((LinkedList<Enemigo>) aux);
+        this.isEliminado((HashSet<Enemigo>) aux);
     }
 }

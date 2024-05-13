@@ -1,10 +1,10 @@
 package org.logic;
 
 public class Coordenadas {
-    private final int DERECHA = 1;
-    private final int IZQUIERDA = -1;
-    private final int ARRIBA = -1;
-    private final int ABAJO = 1;
+    private static final int DERECHA = 1;
+    private static final int IZQUIERDA = -1;
+    private static final int ARRIBA = -1;
+    private static final int ABAJO = 1;
 
     private int x;
     private int y;
@@ -12,10 +12,6 @@ public class Coordenadas {
     public Coordenadas(int x, int y) {
         this.x = x;
         this.y = y;
-    }
-
-    public boolean esIgual(Coordenadas coordenadas){
-        return this.getX() == coordenadas.getX() && this.getY() == coordenadas.getY();
     }
 
     public Coordenadas calcularDesplazamiento(Coordenadas coordenadas) {
@@ -33,6 +29,10 @@ public class Coordenadas {
             resultado.setY(ABAJO);
 
         return resultado;
+    }
+
+    public boolean esIgual(Coordenadas coordenadas){
+        return this.getX() == coordenadas.getX() && this.getY() == coordenadas.getY();
     }
 
     public void setX(int x) {
