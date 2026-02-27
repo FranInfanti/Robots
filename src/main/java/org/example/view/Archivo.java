@@ -1,4 +1,4 @@
-package org.example;
+package org.example.view;
 
 public class Archivo {
     public static final int ALTURA_SCENE = 650;

@@ -1,6 +1,6 @@
-package org.logic;
+package org.example.model;
 
-import org.logic.personajes.*;
+import org.example.model.characters.*;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;

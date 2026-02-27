@@ -1,14 +1,13 @@
-package org.example;
+package org.example.view;
 
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.*;
 import javafx.scene.layout.GridPane;
-import org.example.eventos.EventoDeFin;
 import org.example.model.Coordenadas;
 import org.example.model.Juego;
-import org.example.model.personajes.*;
+import org.example.model.characters.*;
 
 public class Pantalla {
     private final Archivo archivo;

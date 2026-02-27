@@ -1,7 +1,7 @@
-package org.logic;
+package org.example.model;
 
-import org.logic.personajes.Enemigo;
-import org.logic.personajes.Jugador;
+import org.example.model.characters.Enemigo;
+import org.example.model.characters.Jugador;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Random;

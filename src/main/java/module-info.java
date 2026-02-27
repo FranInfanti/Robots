@@ -3,4 +3,6 @@ module org.example {
     requires java.desktop;
     exports org.example;
     exports org.example.eventos;
+    exports org.example.controller;
+    exports org.example.view;
 }

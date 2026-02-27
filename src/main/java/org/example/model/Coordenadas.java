@@ -1,4 +1,4 @@
-package org.logic;
+package org.example.model;
 
 public class Coordenadas {
     private static final int DERECHA = 1;

@@ -1,4 +1,4 @@
-package org.logic;
+package org.example.model;
 
 public class Puntaje {
     private int puntos;

@@ -1,4 +1,4 @@
-package org.example;
+package org.example.view;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -6,10 +6,10 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import org.example.eventos.EventoDeFin;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
 import org.example.model.Coordenadas;
 import org.example.model.Juego;
 

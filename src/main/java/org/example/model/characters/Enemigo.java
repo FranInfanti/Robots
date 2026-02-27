@@ -1,4 +1,4 @@
-package org.example.model.personajes;
+package org.example.model.characters;
 
 import org.example.model.Coordenadas;
 import java.util.*;

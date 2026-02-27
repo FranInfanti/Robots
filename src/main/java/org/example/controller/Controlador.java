@@ -1,6 +1,9 @@
-package org.example;
+package org.example.controller;
 
 import javafx.scene.control.Alert;
+
+import org.example.view.Archivo;
+import org.example.view.Vista;
 import org.example.model.Coordenadas;
 import org.example.model.Juego;
 

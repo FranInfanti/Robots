@@ -1,4 +1,4 @@
-package org.example.eventos;
+package org.example.view;
 
 import javafx.event.Event;
 import javafx.event.EventType;
