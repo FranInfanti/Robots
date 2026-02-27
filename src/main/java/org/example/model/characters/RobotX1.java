@@ -1,6 +1,6 @@
-package org.logic.personajes;
+package org.example.model.personajes;
 
-import org.logic.Coordenadas;
+import org.example.model.Coordenadas;
 import java.util.Collection;
 import java.util.HashSet;
 

@@ -10,8 +10,8 @@ import org.example.eventos.EventoDeFin;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.logic.Coordenadas;
-import org.logic.Juego;
+import org.example.model.Coordenadas;
+import org.example.model.Juego;
 
 public class Vista {
     private final Pantalla pantalla;

@@ -6,9 +6,9 @@ import javafx.scene.control.Button;
 import javafx.scene.image.*;
 import javafx.scene.layout.GridPane;
 import org.example.eventos.EventoDeFin;
-import org.logic.Coordenadas;
-import org.logic.Juego;
-import org.logic.personajes.*;
+import org.example.model.Coordenadas;
+import org.example.model.Juego;
+import org.example.model.personajes.*;
 
 public class Pantalla {
     private final Archivo archivo;

@@ -1,8 +1,8 @@
 package org.example;
 
 import javafx.scene.control.Alert;
-import org.logic.Coordenadas;
-import org.logic.Juego;
+import org.example.model.Coordenadas;
+import org.example.model.Juego;
 
 public class Controlador {
     private Juego juego;

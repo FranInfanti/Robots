@@ -1,10 +1,9 @@
-package org.logic.personajes;
+package org.example.model.personajes;
 
-import org.logic.Coordenadas;
+import org.example.model.Coordenadas;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedList;
 
 public class RobotX2 extends Enemigo {
     private static final int DESPLAZAMIENTO_ROBOTX2 = 2;
